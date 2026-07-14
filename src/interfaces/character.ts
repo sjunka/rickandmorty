@@ -41,6 +41,11 @@ export interface ApiFilter {
   gender?: string;
 }
 
+export interface CharacterSection {
+  title: string;
+  data: Character[];
+}
+
 export interface CharactersQueryData {
   characters: {
     info: { next: number | null };

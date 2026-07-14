@@ -11,6 +11,7 @@ import type {
   SpeciesFilter,
   StatusFilter,
 } from '@/types/filters';
+import { countActiveFilters } from '@/utils/filters';
 
 const KIND_OPTIONS: readonly CharacterKind[] = ['all', 'starred', 'others'];
 const SPECIES_OPTIONS: readonly SpeciesFilter[] = ['all', 'Human', 'Alien'];
@@ -44,6 +45,8 @@ export const FilterModal = ({ visible, filters, onClose, onApply }: FilterModalP
   );
 
   const applyDraft = useCallback(() => onApply(draft), [onApply, draft]);
+
+  const hasFilters = countActiveFilters(draft) > 0;
 
   return (
     <Modal visible={visible} animationType="slide" onRequestClose={onClose}>
@@ -96,11 +99,21 @@ export const FilterModal = ({ visible, filters, onClose, onApply }: FilterModalP
         <View className="px-4 pb-2 pt-2">
           <Pressable
             onPress={applyDraft}
+            disabled={!hasFilters}
             accessibilityRole="button"
+            accessibilityState={{ disabled: !hasFilters }}
             accessibilityLabel="Apply filters"
-            className="rounded-lg bg-primary-600 py-4 active:bg-primary-700"
+            className={`rounded-lg py-4 ${
+              hasFilters ? 'bg-primary-600 active:bg-primary-700' : 'bg-gray-100'
+            }`}
           >
-            <Text className="text-center text-base font-semibold text-white">Filter</Text>
+            <Text
+              className={`text-center text-base font-semibold ${
+                hasFilters ? 'text-white' : 'text-gray-400'
+              }`}
+            >
+              Filter
+            </Text>
           </Pressable>
         </View>
       </View>

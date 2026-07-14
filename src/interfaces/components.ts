@@ -1,4 +1,16 @@
-import type { Character, Filters } from '@/interfaces/character';
+import type { Character, CharacterSection, Filters } from '@/interfaces/character';
+
+export interface CharacterSectionListProps {
+  sections: CharacterSection[];
+  loading: boolean;
+  onPressCharacter: (character: Character) => void;
+  onEndReached: () => void;
+}
+
+export interface ResultsSummaryProps {
+  resultCount: number;
+  filterCount: number;
+}
 
 export interface CharacterRowProps {
   character: Character;
