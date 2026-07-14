@@ -107,3 +107,20 @@ src/
 
 The design follows the Figma mockup: the palette (primary purples, secondary
 green) is defined as Tailwind theme tokens in `global.css`.
+
+## Code health
+
+The full codebase scores **100/100** on [React Doctor](https://react.doctor)
+(security, performance, correctness and architecture scan), and
+**expo-doctor** passes all 20 project checks.
+
+<img src="docs/media/react-doctor.png" width="560" alt="React Doctor output: no issues found, 100 out of 100, Great" />
+
+<img src="docs/media/expo-doctor.png" width="560" alt="expo-doctor output: 20/20 checks passed, no issues detected" />
+
+Reproduce both:
+
+```bash
+npx react-doctor@latest .
+npx expo-doctor
+```
