@@ -18,7 +18,7 @@ const STATUS_COLORS = {
   unknown: '#9e9e9e',
 };
 
-function CharacterCard({ character }) {
+const CharacterCard = ({ character }) => {
   return (
     <View style={styles.card}>
       <Image source={{ uri: character.image }} style={styles.avatar} />
@@ -39,9 +39,9 @@ function CharacterCard({ character }) {
       </View>
     </View>
   );
-}
+};
 
-export default function App() {
+const App = () => {
   const [characters, setCharacters] = useState([]);
   const [nextPage, setNextPage] = useState(API_URL);
   const [loading, setLoading] = useState(false);
@@ -85,7 +85,9 @@ export default function App() {
       </SafeAreaView>
     </SafeAreaProvider>
   );
-}
+};
+
+export default App;
 
 const styles = StyleSheet.create({
   container: {
