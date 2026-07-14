@@ -9,16 +9,26 @@ import {
 } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
+import './global.css';
 
 const API_URL = 'https://rickandmortyapi.com/api/character';
 
-const STATUS_COLORS = {
+const STATUS_COLORS: Record<string, string> = {
   Alive: '#55cc44',
   Dead: '#d63d2e',
   unknown: '#9e9e9e',
 };
 
-const CharacterCard = ({ character }) => {
+interface Character {
+  id: number;
+  name: string;
+  image: string;
+  status: string;
+  species: string;
+  location: { name: string };
+}
+
+const CharacterCard = ({ character }: { character: Character }) => {
   return (
     <View style={styles.card}>
       <Image source={{ uri: character.image }} style={styles.avatar} />
@@ -42,10 +52,10 @@ const CharacterCard = ({ character }) => {
 };
 
 const App = () => {
-  const [characters, setCharacters] = useState([]);
-  const [nextPage, setNextPage] = useState(API_URL);
+  const [characters, setCharacters] = useState<Character[]>([]);
+  const [nextPage, setNextPage] = useState<string | null>(API_URL);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
 
   const loadMore = async () => {
     if (!nextPage || loading) return;
@@ -71,7 +81,7 @@ const App = () => {
     <SafeAreaProvider>
       <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
         <StatusBar style="light" />
-        <Text style={styles.title}>Rick and Morty</Text>
+        <Text className="px-4 py-3 text-3xl font-bold text-secondary-600">Rick and Morty</Text>
         {error && <Text style={styles.error}>{error}</Text>}
         <FlatList
           data={characters}
