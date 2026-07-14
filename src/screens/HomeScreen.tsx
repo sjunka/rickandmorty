@@ -1,22 +1,29 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import type { ListRenderItemInfo } from 'react-native';
 import { ActivityIndicator, Pressable, SectionList, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useQuery } from '@apollo/client/react';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { GET_CHARACTERS } from '@/services/queries';
-import { useDeletedStore } from '@/store/useDeletedStore';
-import { useFavoritesStore } from '@/store/useFavoritesStore';
-import type { Character, CharactersQueryData, Filters, SortDirection } from '@/types/character';
-import type { RootStackParamList } from '@/types/navigation';
-import { applyLocalFilters, countActiveFilters, EMPTY_FILTERS, toApiFilter } from '@/utils/filters';
-import { sortCharactersByName } from '@/utils/sortCharacters';
 import { CharacterRow } from '@/components/CharacterRow';
 import { DeletedBanner } from '@/components/DeletedBanner';
 import { FilterModal } from '@/components/FilterModal';
 import { SearchBar } from '@/components/SearchBar';
 import { SectionHeader } from '@/components/SectionHeader';
+import type { Character, CharactersQueryData, Filters } from '@/interfaces/character';
+import { GET_CHARACTERS } from '@/services/queries';
+import { useDeletedStore } from '@/store/useDeletedStore';
+import { useFavoritesStore } from '@/store/useFavoritesStore';
+import type { SortDirection } from '@/types/filters';
+import type { RootStackParamList } from '@/types/navigation';
+import { applyLocalFilters, countActiveFilters, EMPTY_FILTERS, toApiFilter } from '@/utils/filters';
+import { sortCharactersByName } from '@/utils/sortCharacters';
 
 type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
+
+interface CharacterSection {
+  title: string;
+  data: Character[];
+}
 
 const SEARCH_DEBOUNCE_MS = 350;
 
@@ -58,41 +65,67 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
     const starred = sorted.filter((character) => favoriteIds.includes(character.id));
     const others = sorted.filter((character) => !favoriteIds.includes(character.id));
 
-    const result = [];
-    if (starred.length > 0) {
-      result.push({ title: 'Starred Characters', data: starred });
-    }
-    if (others.length > 0) {
-      result.push({ title: 'Characters', data: others });
-    }
+    const result: CharacterSection[] = [];
+    if (starred.length > 0) result.push({ title: 'Starred Characters', data: starred });
+    if (others.length > 0) result.push({ title: 'Characters', data: others });
+
     return { sections: result, visibleCount: sorted.length };
   }, [data, favoriteIds, deletedIds, filters.kind, sortDirection]);
 
   const activeFilterCount = countActiveFilters(filters);
 
-  const loadMore = () => {
+  const toggleSort = useCallback(
+    () => setSortDirection((current) => (current === 'asc' ? 'desc' : 'asc')),
+    []
+  );
+
+  const openFilters = useCallback(() => setFiltersVisible(true), []);
+  const closeFilters = useCallback(() => setFiltersVisible(false), []);
+
+  const applyFilters = useCallback((nextFilters: Filters) => {
+    setFilters(nextFilters);
+    setFiltersVisible(false);
+  }, []);
+
+  const loadMore = useCallback(() => {
     if (nextPage && !loading) {
       fetchMore({ variables: { page: nextPage, filter: apiFilter } });
     }
-  };
+  }, [nextPage, loading, fetchMore, apiFilter]);
 
-  const openDetail = (character: Character) => {
-    navigation.navigate('CharacterDetail', { id: character.id, name: character.name });
-  };
+  const openDetail = useCallback(
+    (character: Character) => {
+      navigation.navigate('CharacterDetail', { id: character.id, name: character.name });
+    },
+    [navigation]
+  );
 
-  const applyFilters = (nextFilters: Filters) => {
-    setFilters(nextFilters);
-    setFiltersVisible(false);
-  };
+  const renderCharacter = useCallback(
+    ({ item }: ListRenderItemInfo<Character>) => (
+      <CharacterRow character={item} onPress={openDetail} />
+    ),
+    [openDetail]
+  );
+
+  const renderSectionHeader = useCallback(
+    ({ section }: { section: CharacterSection }) => (
+      <SectionHeader title={section.title} count={section.data.length} />
+    ),
+    []
+  );
+
+  const keyExtractor = useCallback((character: Character) => character.id, []);
 
   return (
     <SafeAreaView edges={['top', 'left', 'right']} className="flex-1 bg-white">
       <View className="flex-row items-center justify-between px-4 pb-1 pt-2">
         <Text className="text-2xl font-bold text-gray-900">Rick and Morty list</Text>
         <Pressable
-          onPress={() => setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')}
+          onPress={toggleSort}
           accessibilityRole="button"
-          accessibilityLabel={`Sort by name, currently ${sortDirection === 'asc' ? 'A to Z' : 'Z to A'}`}
+          accessibilityLabel={`Sort by name, currently ${
+            sortDirection === 'asc' ? 'A to Z' : 'Z to A'
+          }`}
           className="rounded-full bg-primary-100 px-3 py-1"
         >
           <Text className="text-sm font-semibold text-primary-600">
@@ -104,7 +137,7 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
       <SearchBar
         value={search}
         onChangeText={setSearch}
-        onPressFilters={() => setFiltersVisible(true)}
+        onPressFilters={openFilters}
         activeFilterCount={activeFilterCount}
       />
 
@@ -131,11 +164,9 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
 
       <SectionList
         sections={sections}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <CharacterRow character={item} onPress={() => openDetail(item)} />}
-        renderSectionHeader={({ section }) => (
-          <SectionHeader title={section.title} count={section.data.length} />
-        )}
+        keyExtractor={keyExtractor}
+        renderItem={renderCharacter}
+        renderSectionHeader={renderSectionHeader}
         stickySectionHeadersEnabled={false}
         onEndReached={loadMore}
         onEndReachedThreshold={0.5}
@@ -153,7 +184,7 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
       <FilterModal
         visible={filtersVisible}
         filters={filters}
-        onClose={() => setFiltersVisible(false)}
+        onClose={closeFilters}
         onApply={applyFilters}
       />
     </SafeAreaView>

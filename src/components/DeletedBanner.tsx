@@ -1,9 +1,5 @@
 import { Pressable, Text, View } from 'react-native';
-
-interface DeletedBannerProps {
-  count: number;
-  onRestore: () => void;
-}
+import type { DeletedBannerProps } from '@/interfaces/components';
 
 /** Makes the soft delete visible and reversible. */
 export const DeletedBanner = ({ count, onRestore }: DeletedBannerProps) => {

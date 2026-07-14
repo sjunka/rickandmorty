@@ -1,4 +1,5 @@
-import type { Character, SortDirection } from '@/types/character';
+import type { Character } from '@/interfaces/character';
+import type { SortDirection } from '@/types/filters';
 
 export function sortCharactersByName<T extends Character>(
   characters: T[],

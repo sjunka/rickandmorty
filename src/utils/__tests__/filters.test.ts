@@ -4,7 +4,7 @@ import {
   EMPTY_FILTERS,
   toApiFilter,
 } from '@/utils/filters';
-import type { Character } from '@/types/character';
+import type { Character } from '@/interfaces/character';
 
 const character = (id: string, name: string): Character => ({
   id,

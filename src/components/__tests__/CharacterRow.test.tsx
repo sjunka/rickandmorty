@@ -2,7 +2,7 @@ import { fireEvent, render } from '@testing-library/react-native';
 import { CharacterRow } from '@/components/CharacterRow';
 import { useDeletedStore } from '@/store/useDeletedStore';
 import { useFavoritesStore } from '@/store/useFavoritesStore';
-import type { Character } from '@/types/character';
+import type { Character } from '@/interfaces/character';
 
 const rick: Character = {
   id: '1',

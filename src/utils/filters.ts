@@ -1,4 +1,5 @@
-import type { ApiFilter, Character, Filters } from '@/types/character';
+import type { ApiFilter, Character, Filters } from '@/interfaces/character';
+import type { CharacterKind } from '@/types/filters';
 
 export const EMPTY_FILTERS: Filters = {
   kind: 'all',
@@ -6,6 +7,18 @@ export const EMPTY_FILTERS: Filters = {
   status: 'all',
   gender: 'all',
 };
+
+const FILTER_LABELS: Record<string, string> = {
+  all: 'All',
+  starred: 'Starred',
+  others: 'Others',
+  unknown: 'Unknown',
+};
+
+/** Turns a filter value into the label shown on its pill. */
+export function formatFilterLabel(option: string): string {
+  return FILTER_LABELS[option] ?? option;
+}
 
 /** Number of filters set to something other than "all", for the results badge. */
 export function countActiveFilters(filters: Filters): number {
@@ -25,7 +38,7 @@ export function toApiFilter(filters: Filters, search: string): ApiFilter {
 interface VisibilityOptions {
   favoriteIds: string[];
   deletedIds: string[];
-  kind: Filters['kind'];
+  kind: CharacterKind;
 }
 
 /** Applies the client-side rules the API cannot express: starred and soft delete. */

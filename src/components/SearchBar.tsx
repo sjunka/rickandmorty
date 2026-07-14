@@ -1,12 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import { Pressable, TextInput, View } from 'react-native';
-
-interface SearchBarProps {
-  value: string;
-  onChangeText: (text: string) => void;
-  onPressFilters: () => void;
-  activeFilterCount: number;
-}
+import type { SearchBarProps } from '@/interfaces/components';
 
 export const SearchBar = ({
   value,
@@ -14,7 +8,7 @@ export const SearchBar = ({
   onPressFilters,
   activeFilterCount,
 }: SearchBarProps) => (
-  <View className="mx-4 mb-2 mt-3 flex-row items-center rounded-lg bg-gray-100 px-3 py-2">
+  <View className="mx-4 mb-3 mt-2 flex-row items-center rounded-lg bg-gray-100 px-3 py-3">
     <Ionicons name="search" size={20} color="#9CA3AF" />
     <TextInput
       value={value}
@@ -23,7 +17,7 @@ export const SearchBar = ({
       placeholderTextColor="#9CA3AF"
       autoCorrect={false}
       accessibilityLabel="Search characters by name"
-      className="ml-2 flex-1 text-base text-gray-800"
+      className="ml-2 flex-1 p-0 text-base text-gray-800"
     />
     <Pressable
       onPress={onPressFilters}
