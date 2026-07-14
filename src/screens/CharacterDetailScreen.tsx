@@ -135,7 +135,7 @@ export const CharacterDetailScreen = ({ route }: CharacterDetailScreenProps) => 
             accessibilityLabel="Send comment"
             className="ml-2 rounded-full bg-primary-600 p-2"
           >
-            <Ionicons name="arrow-up" size={20} color="white" />
+            <Ionicons name="arrow-forward" size={20} color="white" />
           </Pressable>
         </View>
       </ScrollView>
