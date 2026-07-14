@@ -1,4 +1,3 @@
-import { useCallback } from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, Text } from 'react-native';
 import { useQuery } from '@apollo/client/react';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -36,8 +35,8 @@ export const CharacterDetailScreen = ({ route }: CharacterDetailScreenProps) => 
   const comments = useCommentsStore((state) => state.commentsByCharacter[id]) ?? NO_COMMENTS;
   const addComment = useCommentsStore((state) => state.addComment);
 
-  const handleToggleFavorite = useCallback(() => toggleFavorite(id), [toggleFavorite, id]);
-  const handleAddComment = useCallback((text: string) => addComment(id, text), [addComment, id]);
+  const handleToggleFavorite = () => toggleFavorite(id);
+  const handleAddComment = (text: string) => addComment(id, text);
 
   const character = toCharacterDetail(data);
 

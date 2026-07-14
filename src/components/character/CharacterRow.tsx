@@ -1,4 +1,3 @@
-import { useCallback } from 'react';
 import { Pressable, Text, View } from 'react-native';
 import { AnimatedHeart, RemoteImage } from '@/components/common';
 import type { CharacterRowProps } from '@/interfaces/components';
@@ -11,15 +10,9 @@ export const CharacterRow = ({ character, onPress }: CharacterRowProps) => {
   const toggleFavorite = useFavoritesStore((state) => state.toggleFavorite);
   const deleteCharacter = useDeletedStore((state) => state.deleteCharacter);
 
-  const handlePress = useCallback(() => onPress(character), [onPress, character]);
-  const handleToggleFavorite = useCallback(
-    () => toggleFavorite(character.id),
-    [toggleFavorite, character.id]
-  );
-  const handleDelete = useCallback(
-    () => deleteCharacter(character.id),
-    [deleteCharacter, character.id]
-  );
+  const handlePress = () => onPress(character);
+  const handleToggleFavorite = () => toggleFavorite(character.id);
+  const handleDelete = () => deleteCharacter(character.id);
 
   return (
     <Pressable

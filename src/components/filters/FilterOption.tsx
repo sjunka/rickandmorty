@@ -1,4 +1,3 @@
-import { useCallback } from 'react';
 import { Pressable, Text } from 'react-native';
 import type { FilterOptionProps } from '@/interfaces/components';
 
@@ -13,7 +12,7 @@ export const FilterOption = <T extends string>({
   groupLabel,
   onSelect,
 }: FilterOptionProps<T>) => {
-  const handlePress = useCallback(() => onSelect(option), [onSelect, option]);
+  const handlePress = () => onSelect(option);
 
   return (
     <Pressable

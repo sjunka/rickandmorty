@@ -23,6 +23,9 @@
     "plugins": [
       "expo-font",
       "expo-image"
-    ]
+    ],
+    "experiments": {
+      "reactCompiler": true
+    }
   }
 }

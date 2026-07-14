@@ -22,15 +22,17 @@ export const AnimatedHeart = ({ isFavorite, size }: AnimatedHeartProps) => {
       return;
     }
     if (isFavorite) {
-      scale.value = withSequence(
-        withSpring(1.4, { damping: 12, stiffness: 400 }),
-        withSpring(1, { damping: 14, stiffness: 300 })
+      scale.set(
+        withSequence(
+          withSpring(1.4, { damping: 12, stiffness: 400 }),
+          withSpring(1, { damping: 14, stiffness: 300 })
+        )
       );
     }
   }, [isFavorite, scale]);
 
   const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: scale.value }],
+    transform: [{ scale: scale.get() }],
   }));
 
   return (

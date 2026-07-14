@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -33,11 +33,12 @@ export const HomeScreen = ({ navigation, route }: HomeScreenProps) => {
 
   const reopenFilters = route.params?.reopenFilters ?? false;
 
+  // Open the modal during render when the param arrives; the effect only
+  // clears the param on the navigator (an external system).
+  if (reopenFilters && !filtersVisible) setFiltersVisible(true);
+
   useEffect(() => {
-    if (reopenFilters) {
-      setFiltersVisible(true);
-      navigation.setParams({ reopenFilters: false });
-    }
+    if (reopenFilters) navigation.setParams({ reopenFilters: false });
   }, [reopenFilters, navigation]);
 
   useEffect(() => {
@@ -52,30 +53,21 @@ export const HomeScreen = ({ navigation, route }: HomeScreenProps) => {
     sortDirection,
   });
 
-  const toggleSort = useCallback(
-    () => setSortDirection((current) => (current === 'asc' ? 'desc' : 'asc')),
-    []
-  );
+  const toggleSort = () => setSortDirection((current) => (current === 'asc' ? 'desc' : 'asc'));
 
-  const openFilters = useCallback(() => setFiltersVisible(true), []);
-  const closeFilters = useCallback(() => setFiltersVisible(false), []);
+  const openFilters = () => setFiltersVisible(true);
+  const closeFilters = () => setFiltersVisible(false);
 
-  const applyFilters = useCallback(
-    (filters: Filters) => {
-      setFiltersVisible(false);
-      setAppliedFilters(filters);
-      if (countActiveFilters(filters) === 0) return;
-      navigation.navigate('AdvancedSearch', { search: debouncedSearch });
-    },
-    [navigation, debouncedSearch, setAppliedFilters]
-  );
+  const applyFilters = (filters: Filters) => {
+    setFiltersVisible(false);
+    setAppliedFilters(filters);
+    if (countActiveFilters(filters) === 0) return;
+    navigation.navigate('AdvancedSearch', { search: debouncedSearch });
+  };
 
-  const openDetail = useCallback(
-    (character: Character) => {
-      navigation.navigate('CharacterDetail', { id: character.id, name: character.name });
-    },
-    [navigation]
-  );
+  const openDetail = (character: Character) => {
+    navigation.navigate('CharacterDetail', { id: character.id, name: character.name });
+  };
 
   return (
     <View className="flex-1 bg-white dark:bg-gray-900" style={{ paddingTop: insets.top }}>

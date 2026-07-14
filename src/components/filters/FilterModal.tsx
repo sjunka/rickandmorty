@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Modal, ScrollView, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { FilterButton } from '@/components/filters/FilterButton';
@@ -19,28 +19,20 @@ export const FilterModal = ({ visible, filters, onClose, onApply }: FilterModalP
   const [draft, setDraft] = useState<Filters>(filters);
 
   // The modal keeps its own draft so closing without applying discards changes.
-  useEffect(() => {
+  // Reset it during render when the modal opens, instead of in an effect.
+  const [prevVisible, setPrevVisible] = useState(visible);
+  if (visible !== prevVisible) {
+    setPrevVisible(visible);
     if (visible) setDraft(filters);
-  }, [visible, filters]);
+  }
 
-  const selectKind = useCallback(
-    (kind: CharacterKind) => setDraft((current) => ({ ...current, kind })),
-    []
-  );
-  const selectSpecies = useCallback(
-    (species: SpeciesFilter) => setDraft((current) => ({ ...current, species })),
-    []
-  );
-  const selectStatus = useCallback(
-    (status: StatusFilter) => setDraft((current) => ({ ...current, status })),
-    []
-  );
-  const selectGender = useCallback(
-    (gender: GenderFilter) => setDraft((current) => ({ ...current, gender })),
-    []
-  );
+  const selectKind = (kind: CharacterKind) => setDraft((current) => ({ ...current, kind }));
+  const selectSpecies = (species: SpeciesFilter) =>
+    setDraft((current) => ({ ...current, species }));
+  const selectStatus = (status: StatusFilter) => setDraft((current) => ({ ...current, status }));
+  const selectGender = (gender: GenderFilter) => setDraft((current) => ({ ...current, gender }));
 
-  const applyDraft = useCallback(() => onApply(draft), [onApply, draft]);
+  const applyDraft = () => onApply(draft);
 
   return (
     <Modal visible={visible} animationType="slide" onRequestClose={onClose}>
