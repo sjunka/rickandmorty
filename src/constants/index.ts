@@ -8,6 +8,7 @@ export const GRAPHQL_URL = 'https://rickandmortyapi.com/graphql';
 export const COLORS = {
   primary: '#7A56C0',
   secondary: '#82D554',
+  textPrimary: '#111827',
   iconIdle: '#6B7280',
   iconMuted: '#9CA3AF',
   heartOff: '#D1D5DB',
