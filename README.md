@@ -3,6 +3,24 @@
 A React Native app for browsing and searching Rick and Morty characters, built
 with Expo SDK 57 and the [Rick and Morty GraphQL API](https://rickandmortyapi.com/documentation/#graphql).
 
+> **Reviewing this submission?** The one-page
+> [**tech lead brief**](CTO-BRIEF.md) has the targets, the evidence, and the
+> decisions behind the code.
+
+## Demo
+
+<p align="center">
+  <img src="docs/media/demo.gif" width="300" alt="Demo: scrolling the character list, favoriting with the spring heart, filtering by species, and adding a comment on the detail screen" />
+</p>
+
+> 🎬 Prefer video? [Watch the MP4](docs/media/demo.mp4)
+
+## Screenshots
+
+| Home | Filters | Advanced search | Detail | Dark mode |
+|:---:|:---:|:---:|:---:|:---:|
+| ![Character list with search bar and A-Z sort](docs/media/home-light.png) | ![Filter modal with pills for characters, specie, status and gender](docs/media/filters.png) | ![Advanced search with the result count and one active filter](docs/media/advanced-search.png) | ![Rick Sanchez detail with fields and comments](docs/media/detail.png) | ![The list following the system dark appearance](docs/media/home-dark.png) |
+
 ## Features
 
 - Character list with name, image and species, paginated as you scroll
