@@ -1,11 +1,34 @@
 import { useCommentsStore } from '@/store/useCommentsStore';
 import { useDeletedStore } from '@/store/useDeletedStore';
 import { useFavoritesStore } from '@/store/useFavoritesStore';
+import { useFiltersStore } from '@/store/useFiltersStore';
+import { EMPTY_FILTERS } from '@/utils/filters';
 
 beforeEach(() => {
   useFavoritesStore.setState({ favoriteIds: [] });
   useDeletedStore.setState({ deletedIds: [] });
   useCommentsStore.setState({ commentsByCharacter: {} });
+  useFiltersStore.setState({ filters: EMPTY_FILTERS });
+});
+
+describe('useFiltersStore', () => {
+  it('keeps the applied filters so the modal can reopen on them', () => {
+    useFiltersStore.getState().setFilters({ ...EMPTY_FILTERS, species: 'Alien', status: 'Dead' });
+
+    expect(useFiltersStore.getState().filters).toEqual({
+      kind: 'all',
+      species: 'Alien',
+      status: 'Dead',
+      gender: 'all',
+    });
+  });
+
+  it('clears back to no filters', () => {
+    useFiltersStore.getState().setFilters({ ...EMPTY_FILTERS, gender: 'Female' });
+    useFiltersStore.getState().clearFilters();
+
+    expect(useFiltersStore.getState().filters).toEqual(EMPTY_FILTERS);
+  });
 });
 
 describe('useFavoritesStore', () => {

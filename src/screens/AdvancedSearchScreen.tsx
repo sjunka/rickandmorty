@@ -6,6 +6,7 @@ import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { CharacterSectionList } from '@/components/CharacterSectionList';
 import { ResultsSummary } from '@/components/ResultsSummary';
 import type { Character } from '@/interfaces/character';
+import { useFiltersStore } from '@/store/useFiltersStore';
 import type { RootStackParamList } from '@/types/navigation';
 import type { SortDirection } from '@/types/filters';
 import { countActiveFilters } from '@/utils/filters';
@@ -14,9 +15,12 @@ import { useCharacters } from '@/hooks/useCharacters';
 type AdvancedSearchScreenProps = NativeStackScreenProps<RootStackParamList, 'AdvancedSearch'>;
 
 export const AdvancedSearchScreen = ({ navigation, route }: AdvancedSearchScreenProps) => {
-  const { filters, search } = route.params;
+  const { search } = route.params;
   const insets = useSafeAreaInsets();
   const [sortDirection] = useState<SortDirection>('asc');
+
+  // Read from the store, so this screen and the filter modal can never disagree.
+  const filters = useFiltersStore((state) => state.filters);
 
   const { sections, visibleCount, loading, error, loadMore } = useCharacters({
     filters,

@@ -8,6 +8,7 @@ import { FilterModal } from '@/components/FilterModal';
 import { SearchBar } from '@/components/SearchBar';
 import type { Character, Filters } from '@/interfaces/character';
 import { useDeletedStore } from '@/store/useDeletedStore';
+import { useFiltersStore } from '@/store/useFiltersStore';
 import type { SortDirection } from '@/types/filters';
 import type { RootStackParamList } from '@/types/navigation';
 import { countActiveFilters, EMPTY_FILTERS } from '@/utils/filters';
@@ -23,11 +24,13 @@ export const HomeScreen = ({ navigation, route }: HomeScreenProps) => {
   const [search, setSearch] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const [filtersVisible, setFiltersVisible] = useState(false);
-  // Remembered so the modal reopens on the filters that produced the last search.
-  const [lastFilters, setLastFilters] = useState<Filters>(EMPTY_FILTERS);
 
   const deletedIds = useDeletedStore((state) => state.deletedIds);
   const restoreAll = useDeletedStore((state) => state.restoreAll);
+  // The applied filters, so reopening the modal shows the selection that
+  // produced the results the user just came back from.
+  const appliedFilters = useFiltersStore((state) => state.filters);
+  const setAppliedFilters = useFiltersStore((state) => state.setFilters);
 
   const reopenFilters = route.params?.reopenFilters ?? false;
 
@@ -61,11 +64,11 @@ export const HomeScreen = ({ navigation, route }: HomeScreenProps) => {
   const applyFilters = useCallback(
     (filters: Filters) => {
       setFiltersVisible(false);
-      setLastFilters(filters);
+      setAppliedFilters(filters);
       if (countActiveFilters(filters) === 0) return;
-      navigation.navigate('AdvancedSearch', { filters, search: debouncedSearch });
+      navigation.navigate('AdvancedSearch', { search: debouncedSearch });
     },
-    [navigation, debouncedSearch]
+    [navigation, debouncedSearch, setAppliedFilters]
   );
 
   const openDetail = useCallback(
@@ -117,7 +120,7 @@ export const HomeScreen = ({ navigation, route }: HomeScreenProps) => {
 
       <FilterModal
         visible={filtersVisible}
-        filters={lastFilters}
+        filters={appliedFilters}
         onClose={closeFilters}
         onApply={applyFilters}
       />

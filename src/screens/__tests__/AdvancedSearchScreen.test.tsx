@@ -5,6 +5,7 @@ import { AdvancedSearchScreen } from '@/screens/AdvancedSearchScreen';
 import { GET_CHARACTERS } from '@/services/queries';
 import { useDeletedStore } from '@/store/useDeletedStore';
 import { useFavoritesStore } from '@/store/useFavoritesStore';
+import { useFiltersStore } from '@/store/useFiltersStore';
 import type { Filters } from '@/interfaces/character';
 import type { RootStackParamList } from '@/types/navigation';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -46,7 +47,7 @@ const charactersMock = {
 const navigation = { navigate: jest.fn(), goBack: jest.fn() };
 const props = {
   navigation,
-  route: { params: { filters, search: '' } },
+  route: { params: { search: '' } },
 } as unknown as NativeStackScreenProps<RootStackParamList, 'AdvancedSearch'>;
 
 const renderScreen = () =>
@@ -66,6 +67,7 @@ const renderScreen = () =>
 beforeEach(() => {
   useFavoritesStore.setState({ favoriteIds: [] });
   useDeletedStore.setState({ deletedIds: [] });
+  useFiltersStore.setState({ filters });
   navigation.navigate.mockClear();
   navigation.goBack.mockClear();
 });
