@@ -1,20 +1,22 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Pressable, Text, View } from 'react-native';
+import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { CharacterSectionList, DeletedBanner } from '@/components/character';
+import { CharacterSectionList, DeletedBanner, ListHeader } from '@/components/character';
+import { ErrorMessage } from '@/components/common';
 import { FilterModal, SearchBar } from '@/components/filters';
 import type { Character, Filters } from '@/interfaces/character';
+import { useCharacters } from '@/hooks/useCharacters';
 import { useDeletedStore } from '@/store/useDeletedStore';
 import { useFiltersStore } from '@/store/useFiltersStore';
 import type { SortDirection } from '@/types/filters';
 import type { RootStackParamList } from '@/types/navigation';
 import { countActiveFilters, EMPTY_FILTERS } from '@/utils/filters';
-import { useCharacters } from '@/hooks/useCharacters';
 
 type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
 const SEARCH_DEBOUNCE_MS = 350;
+const LOAD_ERROR = 'Could not load characters. Check your connection and try again.';
 
 export const HomeScreen = ({ navigation, route }: HomeScreenProps) => {
   const insets = useSafeAreaInsets();
@@ -78,21 +80,7 @@ export const HomeScreen = ({ navigation, route }: HomeScreenProps) => {
 
   return (
     <View className="flex-1 bg-white" style={{ paddingTop: insets.top }}>
-      <View className="flex-row items-center justify-between px-4 pb-1 pt-4">
-        <Text className="text-2xl font-bold text-gray-900">Rick and Morty list</Text>
-        <Pressable
-          onPress={toggleSort}
-          accessibilityRole="button"
-          accessibilityLabel={`Sort by name, currently ${
-            sortDirection === 'asc' ? 'A to Z' : 'Z to A'
-          }`}
-          className="rounded-full bg-primary-100 px-3 py-1"
-        >
-          <Text className="text-sm font-semibold text-primary-600">
-            {sortDirection === 'asc' ? 'A-Z' : 'Z-A'}
-          </Text>
-        </Pressable>
-      </View>
+      <ListHeader sortDirection={sortDirection} onToggleSort={toggleSort} />
 
       <SearchBar
         value={search}
@@ -103,11 +91,7 @@ export const HomeScreen = ({ navigation, route }: HomeScreenProps) => {
 
       <DeletedBanner count={deletedIds.length} onRestore={restoreAll} />
 
-      {error && (
-        <Text className="px-4 py-2 text-sm text-red-500">
-          Could not load characters. Check your connection and try again.
-        </Text>
-      )}
+      {error && <ErrorMessage message={LOAD_ERROR} />}
 
       <CharacterSectionList
         sections={sections}

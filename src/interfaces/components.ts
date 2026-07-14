@@ -1,6 +1,32 @@
-import type { Character, CharacterSection, Filters } from '@/interfaces/character';
+import type {
+  Character,
+  CharacterDetail,
+  CharacterSection,
+  Comment,
+  Filters,
+} from '@/interfaces/character';
+import type { SortDirection } from '@/types/filters';
+
+/* Shared */
+
+export interface EmptyStateProps {
+  message: string;
+}
+
+export interface ErrorMessageProps {
+  message: string;
+}
+
+export interface FullScreenMessageProps {
+  message: string;
+}
 
 /* Character list */
+
+export interface ListHeaderProps {
+  sortDirection: SortDirection;
+  onToggleSort: () => void;
+}
 
 export interface CharacterRowProps {
   character: Character;
@@ -40,6 +66,20 @@ export interface FilterModalProps {
   onApply: (filters: Filters) => void;
 }
 
+export interface FilterHeaderProps {
+  onClose: () => void;
+}
+
+export interface FilterButtonProps {
+  enabled: boolean;
+  onPress: () => void;
+}
+
+export interface AdvancedSearchHeaderProps {
+  onBack: () => void;
+  onDone: () => void;
+}
+
 export interface FilterGroupProps<T extends string> {
   label: string;
   options: readonly T[];
@@ -62,9 +102,23 @@ export interface ResultsSummaryProps {
 
 /* Character detail */
 
+export interface CharacterAvatarProps {
+  image: string;
+  isFavorite: boolean;
+  onToggleFavorite: () => void;
+}
+
+export interface CharacterFieldsProps {
+  character: CharacterDetail;
+}
+
 export interface DetailFieldProps {
   label: string;
   value: string;
+}
+
+export interface CommentListProps {
+  comments: Comment[];
 }
 
 export interface CommentInputProps {

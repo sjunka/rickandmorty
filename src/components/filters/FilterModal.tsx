@@ -1,16 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Modal, Pressable, ScrollView, Text, View } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { Modal, ScrollView, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { FilterButton } from '@/components/filters/FilterButton';
 import { FilterGroup } from '@/components/filters/FilterGroup';
+import { FilterHeader } from '@/components/filters/FilterHeader';
 import type { FilterModalProps } from '@/interfaces/components';
 import type { Filters } from '@/interfaces/character';
-import type {
-  CharacterKind,
-  GenderFilter,
-  SpeciesFilter,
-  StatusFilter,
-} from '@/types/filters';
+import type { CharacterKind, GenderFilter, SpeciesFilter, StatusFilter } from '@/types/filters';
 import { countActiveFilters } from '@/utils/filters';
 
 const KIND_OPTIONS: readonly CharacterKind[] = ['all', 'starred', 'others'];
@@ -46,8 +42,6 @@ export const FilterModal = ({ visible, filters, onClose, onApply }: FilterModalP
 
   const applyDraft = useCallback(() => onApply(draft), [onApply, draft]);
 
-  const hasFilters = countActiveFilters(draft) > 0;
-
   return (
     <Modal visible={visible} animationType="slide" onRequestClose={onClose}>
       {/* A Modal renders in its own native hierarchy, so the safe area has to
@@ -56,18 +50,7 @@ export const FilterModal = ({ visible, filters, onClose, onApply }: FilterModalP
         className="flex-1 bg-white"
         style={{ paddingTop: insets.top, paddingBottom: insets.bottom }}
       >
-        <View className="flex-row items-center px-4 py-3">
-          <Pressable
-            onPress={onClose}
-            hitSlop={8}
-            accessibilityRole="button"
-            accessibilityLabel="Close filters"
-          >
-            <Ionicons name="arrow-back" size={24} color="#7A56C0" />
-          </Pressable>
-          <Text className="flex-1 text-center text-base font-semibold text-gray-900">Filters</Text>
-          <View className="w-6" />
-        </View>
+        <FilterHeader onClose={onClose} />
 
         <ScrollView contentContainerClassName="px-4 pt-4">
           <FilterGroup
@@ -97,24 +80,7 @@ export const FilterModal = ({ visible, filters, onClose, onApply }: FilterModalP
         </ScrollView>
 
         <View className="px-4 pb-2 pt-2">
-          <Pressable
-            onPress={applyDraft}
-            disabled={!hasFilters}
-            accessibilityRole="button"
-            accessibilityState={{ disabled: !hasFilters }}
-            accessibilityLabel="Apply filters"
-            className={`rounded-lg py-4 ${
-              hasFilters ? 'bg-primary-600 active:bg-primary-700' : 'bg-gray-100'
-            }`}
-          >
-            <Text
-              className={`text-center text-base font-semibold ${
-                hasFilters ? 'text-white' : 'text-gray-400'
-              }`}
-            >
-              Filter
-            </Text>
-          </Pressable>
+          <FilterButton enabled={countActiveFilters(draft) > 0} onPress={applyDraft} />
         </View>
       </View>
     </Modal>

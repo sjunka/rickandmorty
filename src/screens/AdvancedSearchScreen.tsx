@@ -1,18 +1,20 @@
 import { useCallback, useState } from 'react';
-import { Pressable, Text, View } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { CharacterSectionList } from '@/components/character';
-import { ResultsSummary } from '@/components/filters';
+import { ErrorMessage } from '@/components/common';
+import { AdvancedSearchHeader, ResultsSummary } from '@/components/filters';
 import type { Character } from '@/interfaces/character';
-import { useFiltersStore } from '@/store/useFiltersStore';
-import type { RootStackParamList } from '@/types/navigation';
-import type { SortDirection } from '@/types/filters';
-import { countActiveFilters } from '@/utils/filters';
 import { useCharacters } from '@/hooks/useCharacters';
+import { useFiltersStore } from '@/store/useFiltersStore';
+import type { SortDirection } from '@/types/filters';
+import type { RootStackParamList } from '@/types/navigation';
+import { countActiveFilters } from '@/utils/filters';
 
 type AdvancedSearchScreenProps = NativeStackScreenProps<RootStackParamList, 'AdvancedSearch'>;
+
+const LOAD_ERROR = 'Could not load characters. Check your connection and try again.';
 
 export const AdvancedSearchScreen = ({ navigation, route }: AdvancedSearchScreenProps) => {
   const { search } = route.params;
@@ -45,30 +47,11 @@ export const AdvancedSearchScreen = ({ navigation, route }: AdvancedSearchScreen
 
   return (
     <View className="flex-1 bg-white" style={{ paddingTop: insets.top }}>
-      <View className="flex-row items-center px-4 py-3">
-        <Pressable
-          onPress={backToFilters}
-          hitSlop={8}
-          accessibilityRole="button"
-          accessibilityLabel="Back to filters"
-        >
-          <Ionicons name="arrow-back" size={24} color="#7A56C0" />
-        </Pressable>
-        <Text className="flex-1 text-center text-base font-semibold text-gray-900">
-          Advanced search
-        </Text>
-        <Pressable onPress={done} hitSlop={8} accessibilityRole="button" accessibilityLabel="Done">
-          <Text className="text-base font-semibold text-primary-600">Done</Text>
-        </Pressable>
-      </View>
+      <AdvancedSearchHeader onBack={backToFilters} onDone={done} />
 
       <ResultsSummary resultCount={visibleCount} filterCount={countActiveFilters(filters)} />
 
-      {error && (
-        <Text className="px-4 py-2 text-sm text-red-500">
-          Could not load characters. Check your connection and try again.
-        </Text>
-      )}
+      {error && <ErrorMessage message={LOAD_ERROR} />}
 
       <CharacterSectionList
         sections={sections}

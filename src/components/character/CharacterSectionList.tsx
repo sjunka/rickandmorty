@@ -1,10 +1,13 @@
 import { useCallback } from 'react';
 import type { ListRenderItemInfo } from 'react-native';
-import { ActivityIndicator, SectionList, Text } from 'react-native';
+import { SectionList } from 'react-native';
 import { CharacterRow } from '@/components/character/CharacterRow';
 import { SectionHeader } from '@/components/character/SectionHeader';
+import { EmptyState, LoadingFooter } from '@/components/common';
 import type { CharacterSectionListProps } from '@/interfaces/components';
 import type { Character, CharacterSection } from '@/interfaces/character';
+
+const NoCharacters = () => <EmptyState message="No characters match your search." />;
 
 /** The starred/others list, shared by the home and advanced search screens. */
 export const CharacterSectionList = ({
@@ -39,14 +42,8 @@ export const CharacterSectionList = ({
       onEndReached={onEndReached}
       onEndReachedThreshold={0.5}
       keyboardShouldPersistTaps="handled"
-      ListFooterComponent={loading ? <ActivityIndicator className="py-6" color="#7A56C0" /> : null}
-      ListEmptyComponent={
-        loading ? null : (
-          <Text className="px-4 py-8 text-center text-gray-400">
-            No characters match your search.
-          </Text>
-        )
-      }
+      ListFooterComponent={loading ? LoadingFooter : null}
+      ListEmptyComponent={loading ? null : NoCharacters}
     />
   );
 };
