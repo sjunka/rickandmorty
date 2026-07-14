@@ -1,0 +1,10 @@
+import type { Character, SortDirection } from '@/types/character';
+
+export function sortCharactersByName<T extends Character>(
+  characters: T[],
+  direction: SortDirection
+): T[] {
+  return [...characters].sort((a, b) =>
+    direction === 'asc' ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name)
+  );
+}
