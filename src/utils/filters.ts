@@ -46,10 +46,14 @@ export function applyLocalFilters<T extends Character>(
   characters: T[],
   { favoriteIds, deletedIds, kind }: VisibilityOptions
 ): T[] {
+  // Sets, so each character is a constant-time lookup instead of an array scan.
+  const favorites = new Set(favoriteIds);
+  const deleted = new Set(deletedIds);
+
   return characters.filter((character) => {
-    if (deletedIds.includes(character.id)) return false;
-    if (kind === 'starred') return favoriteIds.includes(character.id);
-    if (kind === 'others') return !favoriteIds.includes(character.id);
+    if (deleted.has(character.id)) return false;
+    if (kind === 'starred') return favorites.has(character.id);
+    if (kind === 'others') return !favorites.has(character.id);
     return true;
   });
 }

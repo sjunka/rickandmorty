@@ -51,8 +51,9 @@ export function useCharacters({
       kind: filters.kind,
     });
     const sorted = sortCharactersByName(visible, sortDirection);
-    const starred = sorted.filter((character) => favoriteIds.includes(character.id));
-    const others = sorted.filter((character) => !favoriteIds.includes(character.id));
+    const favorites = new Set(favoriteIds);
+    const starred = sorted.filter((character) => favorites.has(character.id));
+    const others = sorted.filter((character) => !favorites.has(character.id));
 
     const result: CharacterSection[] = [];
     if (starred.length > 0) result.push({ title: 'Starred Characters', data: starred });

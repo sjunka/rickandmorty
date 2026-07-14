@@ -1,11 +1,12 @@
-import { Image, Pressable, View } from 'react-native';
+import { Pressable, View } from 'react-native';
+import { RemoteImage } from '@/components/common';
 import { Ionicons } from '@expo/vector-icons';
 import type { CharacterAvatarProps } from '@/interfaces/components';
 
 /** The detail image with the favorite heart pinned to its corner. */
 export const CharacterAvatar = ({ image, isFavorite, onToggleFavorite }: CharacterAvatarProps) => (
   <View className="mt-2 self-start">
-    <Image source={{ uri: image }} className="h-20 w-20 rounded-full" />
+    <RemoteImage source={{ uri: image }} className="h-20 w-20 rounded-full" />
     <Pressable
       onPress={onToggleFavorite}
       hitSlop={8}
