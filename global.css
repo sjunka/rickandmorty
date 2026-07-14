@@ -1,0 +1,13 @@
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/preflight.css' layer(base);
+@import 'tailwindcss/utilities.css';
+
+@import 'nativewind/theme';
+
+/* Palette sampled from the Figma mockup */
+@theme {
+  --color-primary-100: #ece3fd;
+  --color-primary-600: #7a56c0;
+  --color-primary-700: #553891;
+  --color-secondary-600: #82d554;
+}

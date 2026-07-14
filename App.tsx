@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
+import './global.css';
 
 const API_URL = 'https://rickandmortyapi.com/api/character';
 
@@ -80,7 +81,7 @@ const App = () => {
     <SafeAreaProvider>
       <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
         <StatusBar style="light" />
-        <Text style={styles.title}>Rick and Morty</Text>
+        <Text className="px-4 py-3 text-3xl font-bold text-secondary-600">Rick and Morty</Text>
         {error && <Text style={styles.error}>{error}</Text>}
         <FlatList
           data={characters}
