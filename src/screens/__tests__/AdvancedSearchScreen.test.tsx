@@ -85,13 +85,19 @@ describe('AdvancedSearchScreen', () => {
     expect(getByText('Beth Smith')).toBeTruthy();
   });
 
-  it('goes back to the filters and home from the header', async () => {
+  it('reopens the filters when going back', async () => {
     const { getByLabelText } = await renderScreen();
 
     fireEvent.press(getByLabelText('Back to filters'));
-    expect(navigation.goBack).toHaveBeenCalledTimes(1);
+
+    expect(navigation.navigate).toHaveBeenCalledWith('Home', { reopenFilters: true });
+  });
+
+  it('returns to the list without the filters when done', async () => {
+    const { getByLabelText } = await renderScreen();
 
     fireEvent.press(getByLabelText('Done'));
+
     expect(navigation.navigate).toHaveBeenCalledWith('Home');
   });
 });

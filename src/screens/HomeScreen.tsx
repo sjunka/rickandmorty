@@ -17,15 +17,26 @@ type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
 const SEARCH_DEBOUNCE_MS = 350;
 
-export const HomeScreen = ({ navigation }: HomeScreenProps) => {
+export const HomeScreen = ({ navigation, route }: HomeScreenProps) => {
   const insets = useSafeAreaInsets();
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
   const [search, setSearch] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const [filtersVisible, setFiltersVisible] = useState(false);
+  // Remembered so the modal reopens on the filters that produced the last search.
+  const [lastFilters, setLastFilters] = useState<Filters>(EMPTY_FILTERS);
 
   const deletedIds = useDeletedStore((state) => state.deletedIds);
   const restoreAll = useDeletedStore((state) => state.restoreAll);
+
+  const reopenFilters = route.params?.reopenFilters ?? false;
+
+  useEffect(() => {
+    if (reopenFilters) {
+      setFiltersVisible(true);
+      navigation.setParams({ reopenFilters: false });
+    }
+  }, [reopenFilters, navigation]);
 
   useEffect(() => {
     const timeout = setTimeout(() => setDebouncedSearch(search), SEARCH_DEBOUNCE_MS);
@@ -50,6 +61,7 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
   const applyFilters = useCallback(
     (filters: Filters) => {
       setFiltersVisible(false);
+      setLastFilters(filters);
       if (countActiveFilters(filters) === 0) return;
       navigation.navigate('AdvancedSearch', { filters, search: debouncedSearch });
     },
@@ -105,7 +117,7 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
 
       <FilterModal
         visible={filtersVisible}
-        filters={EMPTY_FILTERS}
+        filters={lastFilters}
         onClose={closeFilters}
         onApply={applyFilters}
       />

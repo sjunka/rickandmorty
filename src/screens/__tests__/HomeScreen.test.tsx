@@ -37,7 +37,7 @@ const charactersMock = {
   },
 };
 
-const navigation = { navigate: jest.fn() };
+const navigation = { navigate: jest.fn(), setParams: jest.fn() };
 const props = { navigation, route: { params: undefined } } as unknown as NativeStackScreenProps<
   RootStackParamList,
   'Home'

@@ -24,7 +24,12 @@ export const AdvancedSearchScreen = ({ navigation, route }: AdvancedSearchScreen
     sortDirection,
   });
 
-  const goBack = useCallback(() => navigation.goBack(), [navigation]);
+  // The filters live in a modal on the home screen rather than in the stack,
+  // so going back means returning home and reopening it.
+  const backToFilters = useCallback(
+    () => navigation.navigate('Home', { reopenFilters: true }),
+    [navigation]
+  );
   const done = useCallback(() => navigation.navigate('Home'), [navigation]);
 
   const openDetail = useCallback(
@@ -38,7 +43,7 @@ export const AdvancedSearchScreen = ({ navigation, route }: AdvancedSearchScreen
     <View className="flex-1 bg-white" style={{ paddingTop: insets.top }}>
       <View className="flex-row items-center px-4 py-3">
         <Pressable
-          onPress={goBack}
+          onPress={backToFilters}
           hitSlop={8}
           accessibilityRole="button"
           accessibilityLabel="Back to filters"
