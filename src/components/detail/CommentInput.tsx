@@ -25,7 +25,7 @@ export const CommentInput = ({ onSubmit }: CommentInputProps) => {
         placeholder={MESSAGES.commentPlaceholder}
         placeholderTextColor={colors.iconMuted}
         accessibilityLabel="Comment input"
-        className="flex-1 rounded-full bg-gray-100 dark:bg-gray-800 px-4 py-3 text-base text-gray-800 dark:text-gray-200"
+        className="h-12 flex-1 rounded-full bg-gray-100 dark:bg-gray-800 px-4 py-0 text-base leading-5 text-gray-800 dark:text-gray-200"
         onSubmitEditing={submit}
         returnKeyType="send"
       />
