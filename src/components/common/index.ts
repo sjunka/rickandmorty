@@ -1,3 +1,4 @@
+export { AnimatedHeart } from '@/components/common/AnimatedHeart';
 export { EmptyState } from '@/components/common/EmptyState';
 export { ErrorMessage } from '@/components/common/ErrorMessage';
 export { FullScreenLoader } from '@/components/common/FullScreenLoader';
