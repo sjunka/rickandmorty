@@ -1,93 +1,112 @@
-import { useMemo, useState } from 'react';
-import { ActivityIndicator, Pressable, SectionList, Text, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useQuery } from '@apollo/client/react';
+import { useCallback, useEffect, useState } from 'react';
+import { View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { GET_CHARACTERS } from '@/services/queries';
-import { useFavoritesStore } from '@/store/useFavoritesStore';
-import type { Character, CharactersQueryData, SortDirection } from '@/types/character';
+import { CharacterSectionList, DeletedBanner, ListHeader } from '@/components/character';
+import { ErrorMessage } from '@/components/common';
+import { FilterModal } from '@/components/filters';
+import { SearchBar } from '@/components/search';
+import type { Character, Filters } from '@/interfaces/character';
+import { useCharacters } from '@/hooks/useCharacters';
+import { useDeletedStore } from '@/store/useDeletedStore';
+import { useFiltersStore } from '@/store/useFiltersStore';
+import type { SortDirection } from '@/types/filters';
 import type { RootStackParamList } from '@/types/navigation';
-import { sortCharactersByName } from '@/utils/sortCharacters';
-import { CharacterRow } from '@/components/CharacterRow';
-import { SectionHeader } from '@/components/SectionHeader';
+import { countActiveFilters, EMPTY_FILTERS } from '@/utils/filters';
 
 type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
-export const HomeScreen = ({ navigation }: HomeScreenProps) => {
-  const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
-  const favoriteIds = useFavoritesStore((state) => state.favoriteIds);
+const SEARCH_DEBOUNCE_MS = 350;
+const LOAD_ERROR = 'Could not load characters. Check your connection and try again.';
 
-  const { data, loading, error, fetchMore } = useQuery<CharactersQueryData>(GET_CHARACTERS, {
-    variables: { page: 1 },
-    // Make `loading` reflect fetchMore too, so loadMore can't re-request
-    // the same page while it is still in flight.
-    notifyOnNetworkStatusChange: true,
+export const HomeScreen = ({ navigation, route }: HomeScreenProps) => {
+  const insets = useSafeAreaInsets();
+  const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
+  const [search, setSearch] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
+  const [filtersVisible, setFiltersVisible] = useState(false);
+
+  const deletedIds = useDeletedStore((state) => state.deletedIds);
+  const restoreAll = useDeletedStore((state) => state.restoreAll);
+  // The applied filters, so reopening the modal shows the selection that
+  // produced the results the user just came back from.
+  const appliedFilters = useFiltersStore((state) => state.filters);
+  const setAppliedFilters = useFiltersStore((state) => state.setFilters);
+
+  const reopenFilters = route.params?.reopenFilters ?? false;
+
+  useEffect(() => {
+    if (reopenFilters) {
+      setFiltersVisible(true);
+      navigation.setParams({ reopenFilters: false });
+    }
+  }, [reopenFilters, navigation]);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => setDebouncedSearch(search), SEARCH_DEBOUNCE_MS);
+    return () => clearTimeout(timeout);
+  }, [search]);
+
+  // The home list stays unfiltered: applying filters opens the advanced search screen.
+  const { sections, loading, error, loadMore } = useCharacters({
+    filters: EMPTY_FILTERS,
+    search: debouncedSearch,
+    sortDirection,
   });
 
-  const nextPage = data?.characters.info.next ?? null;
+  const toggleSort = useCallback(
+    () => setSortDirection((current) => (current === 'asc' ? 'desc' : 'asc')),
+    []
+  );
 
-  const sections = useMemo(() => {
-    const characters = sortCharactersByName(data?.characters.results ?? [], sortDirection);
-    const starred = characters.filter((character) => favoriteIds.includes(character.id));
-    const rest = characters.filter((character) => !favoriteIds.includes(character.id));
+  const openFilters = useCallback(() => setFiltersVisible(true), []);
+  const closeFilters = useCallback(() => setFiltersVisible(false), []);
 
-    const result = [];
-    if (starred.length > 0) {
-      result.push({ title: 'Starred Characters', data: starred });
-    }
-    result.push({ title: 'Characters', data: rest });
-    return result;
-  }, [data, favoriteIds, sortDirection]);
+  const applyFilters = useCallback(
+    (filters: Filters) => {
+      setFiltersVisible(false);
+      setAppliedFilters(filters);
+      if (countActiveFilters(filters) === 0) return;
+      navigation.navigate('AdvancedSearch', { search: debouncedSearch });
+    },
+    [navigation, debouncedSearch, setAppliedFilters]
+  );
 
-  const loadMore = () => {
-    if (nextPage && !loading) {
-      fetchMore({ variables: { page: nextPage } });
-    }
-  };
-
-  const openDetail = (character: Character) => {
-    navigation.navigate('CharacterDetail', { id: character.id, name: character.name });
-  };
+  const openDetail = useCallback(
+    (character: Character) => {
+      navigation.navigate('CharacterDetail', { id: character.id, name: character.name });
+    },
+    [navigation]
+  );
 
   return (
-    <SafeAreaView edges={['top', 'left', 'right']} className="flex-1 bg-white">
-      <View className="flex-row items-center justify-between px-4 pb-1 pt-2">
-        <Text className="text-2xl font-bold text-gray-900">Rick and Morty list</Text>
-        <Pressable
-          onPress={() => setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')}
-          accessibilityRole="button"
-          accessibilityLabel={`Sort by name, currently ${sortDirection === 'asc' ? 'A to Z' : 'Z to A'}`}
-          className="rounded-full bg-primary-100 px-3 py-1"
-        >
-          <Text className="text-sm font-semibold text-primary-600">
-            {sortDirection === 'asc' ? 'A-Z' : 'Z-A'}
-          </Text>
-        </Pressable>
-      </View>
+    <View className="flex-1 bg-white" style={{ paddingTop: insets.top }}>
+      <ListHeader sortDirection={sortDirection} onToggleSort={toggleSort} />
 
-      {error && (
-        <Text className="px-4 py-2 text-sm text-red-500">
-          Could not load characters. Pull to retry or check your connection.
-        </Text>
-      )}
-
-      <SectionList
-        sections={sections}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <CharacterRow character={item} onPress={() => openDetail(item)} />}
-        renderSectionHeader={({ section }) => (
-          <SectionHeader title={section.title} count={section.data.length} />
-        )}
-        stickySectionHeadersEnabled={false}
-        onEndReached={loadMore}
-        onEndReachedThreshold={0.5}
-        ListFooterComponent={loading ? <ActivityIndicator className="py-6" color="#7A56C0" /> : null}
-        ListEmptyComponent={
-          !loading && !error ? (
-            <Text className="px-4 py-8 text-center text-gray-400">No characters found.</Text>
-          ) : null
-        }
+      <SearchBar
+        value={search}
+        onChangeText={setSearch}
+        onPressFilters={openFilters}
+        activeFilterCount={0}
       />
-    </SafeAreaView>
+
+      <DeletedBanner count={deletedIds.length} onRestore={restoreAll} />
+
+      {error && <ErrorMessage message={LOAD_ERROR} />}
+
+      <CharacterSectionList
+        sections={sections}
+        loading={loading}
+        onPressCharacter={openDetail}
+        onEndReached={loadMore}
+      />
+
+      <FilterModal
+        visible={filtersVisible}
+        filters={appliedFilters}
+        onClose={closeFilters}
+        onApply={applyFilters}
+      />
+    </View>
   );
 };

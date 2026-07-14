@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
-import type { Comment } from '@/types/character';
+import type { Comment } from '@/interfaces/character';
 
 interface CommentsState {
   commentsByCharacter: Record<string, Comment[]>;
