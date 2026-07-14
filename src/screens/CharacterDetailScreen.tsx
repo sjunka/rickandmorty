@@ -14,14 +14,13 @@ import { GET_CHARACTER } from '@/services/queries';
 import { useCommentsStore } from '@/store/useCommentsStore';
 import { useFavoritesStore } from '@/store/useFavoritesStore';
 import type { RootStackParamList } from '@/types/navigation';
+import { IOS_KEYBOARD_OFFSET, MESSAGES } from '@/constants';
 
 type CharacterDetailScreenProps = NativeStackScreenProps<RootStackParamList, 'CharacterDetail'>;
 
 // Stable fallback: an inline `?? []` inside the selector would return a new
 // array on every snapshot and send Zustand v5 into an infinite render loop.
 const NO_COMMENTS: Comment[] = [];
-
-const LOAD_ERROR = 'Could not load this character. Check your connection and try again.';
 
 export const CharacterDetailScreen = ({ route }: CharacterDetailScreenProps) => {
   const { id } = route.params;
@@ -39,7 +38,7 @@ export const CharacterDetailScreen = ({ route }: CharacterDetailScreenProps) => 
   const handleAddComment = useCallback((text: string) => addComment(id, text), [addComment, id]);
 
   if (loading) return <FullScreenLoader />;
-  if (error || !data) return <FullScreenMessage message={LOAD_ERROR} />;
+  if (error || !data) return <FullScreenMessage message={MESSAGES.loadDetailError} />;
 
   const { character } = data;
 
@@ -47,7 +46,7 @@ export const CharacterDetailScreen = ({ route }: CharacterDetailScreenProps) => 
     <KeyboardAvoidingView
       className="flex-1 bg-white"
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-      keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? IOS_KEYBOARD_OFFSET : 0}
     >
       <ScrollView className="flex-1 px-4" keyboardShouldPersistTaps="handled">
         <CharacterAvatar

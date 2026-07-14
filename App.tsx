@@ -3,6 +3,7 @@ import { ApolloProvider } from '@apollo/client/react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { COLORS } from '@/constants';
 import { apolloClient } from '@/services/apollo';
 import { HomeScreen } from '@/screens/HomeScreen';
 import { AdvancedSearchScreen } from '@/screens/AdvancedSearchScreen';
@@ -20,8 +21,8 @@ const App = () => {
           <StatusBar style="dark" />
           <Stack.Navigator
             screenOptions={{
-              headerTintColor: '#7A56C0',
-              headerTitleStyle: { color: '#111827' },
+              headerTintColor: COLORS.primary,
+              headerTitleStyle: { color: COLORS.textPrimary },
               headerShadowVisible: false,
             }}
           >

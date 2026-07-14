@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
+import { STORAGE_KEYS } from '@/constants';
 
 /**
  * Soft delete: characters are hidden from the list but kept in the store,
@@ -30,7 +31,7 @@ export const useDeletedStore = create<DeletedState>()(
       restoreAll: () => set({ deletedIds: [] }),
     }),
     {
-      name: 'deleted-characters',
+      name: STORAGE_KEYS.deleted,
       storage: createJSONStorage(() => AsyncStorage),
     }
   )

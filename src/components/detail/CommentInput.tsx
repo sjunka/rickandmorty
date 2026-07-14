@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react';
 import { Pressable, TextInput, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import type { CommentInputProps } from '@/interfaces/components';
+import { COLORS, MESSAGES } from '@/constants';
 
 /** Owns the draft text so the screen only hears about finished comments. */
 export const CommentInput = ({ onSubmit }: CommentInputProps) => {
@@ -19,8 +20,8 @@ export const CommentInput = ({ onSubmit }: CommentInputProps) => {
       <TextInput
         value={text}
         onChangeText={setText}
-        placeholder="Write a comment..."
-        placeholderTextColor="#9CA3AF"
+        placeholder={MESSAGES.commentPlaceholder}
+        placeholderTextColor={COLORS.iconMuted}
         accessibilityLabel="Comment input"
         className="flex-1 rounded-full bg-gray-100 px-4 py-3 text-base text-gray-800"
         onSubmitEditing={submit}
