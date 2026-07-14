@@ -50,7 +50,7 @@ export interface DeletedBannerProps {
   onRestore: () => void;
 }
 
-/* Search and filters */
+/* Search */
 
 export interface SearchBarProps {
   value: string;
@@ -58,6 +58,18 @@ export interface SearchBarProps {
   onPressFilters: () => void;
   activeFilterCount: number;
 }
+
+export interface AdvancedSearchHeaderProps {
+  onBack: () => void;
+  onDone: () => void;
+}
+
+export interface ResultsSummaryProps {
+  resultCount: number;
+  filterCount: number;
+}
+
+/* Filters */
 
 export interface FilterModalProps {
   visible: boolean;
@@ -75,11 +87,6 @@ export interface FilterButtonProps {
   onPress: () => void;
 }
 
-export interface AdvancedSearchHeaderProps {
-  onBack: () => void;
-  onDone: () => void;
-}
-
 export interface FilterGroupProps<T extends string> {
   label: string;
   options: readonly T[];
@@ -93,11 +100,6 @@ export interface FilterOptionProps<T extends string> {
   label: string;
   groupLabel: string;
   onSelect: (option: T) => void;
-}
-
-export interface ResultsSummaryProps {
-  resultCount: number;
-  filterCount: number;
 }
 
 /* Character detail */

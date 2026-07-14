@@ -4,7 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { CharacterSectionList } from '@/components/character';
 import { ErrorMessage } from '@/components/common';
-import { AdvancedSearchHeader, ResultsSummary } from '@/components/filters';
+import { AdvancedSearchHeader, ResultsSummary } from '@/components/search';
 import type { Character } from '@/interfaces/character';
 import { useCharacters } from '@/hooks/useCharacters';
 import { useFiltersStore } from '@/store/useFiltersStore';

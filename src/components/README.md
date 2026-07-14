@@ -26,18 +26,23 @@ The list of characters, shared by the home and advanced search screens.
 - `ListHeader` — the screen title and the A-Z / Z-A sort toggle
 - `DeletedBanner` — how many characters are hidden by the soft delete, with a restore action
 
-## filters
+## search
 
-Searching and filtering.
+Searching for characters and showing what came back.
 
 - `SearchBar` — the name search and the button that opens the filters
-- `FilterModal` — the filter sheet, holding a draft until the user applies it
+- `AdvancedSearchHeader` — back, title and Done on the advanced search screen
+- `ResultsSummary` — the result count and active filter badge
+
+## filters
+
+The filter sheet itself.
+
+- `FilterModal` — the sheet, holding a draft until the user applies it
 - `FilterHeader` — its back arrow and title
 - `FilterGroup` — one row of pills, such as Specie
 - `FilterOption` — a single pill, which owns its own press handler
 - `FilterButton` — the apply button, disabled until a filter is picked
-- `AdvancedSearchHeader` — back, title and Done on the advanced search screen
-- `ResultsSummary` — the result count and active filter badge
 
 ## detail
 
