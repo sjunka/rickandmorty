@@ -6,8 +6,9 @@ import { SectionHeader } from '@/components/character/SectionHeader';
 import { EmptyState, LoadingFooter } from '@/components/common';
 import type { CharacterSectionListProps } from '@/interfaces/components';
 import type { Character, CharacterSection } from '@/interfaces/character';
+import { LIST_END_THRESHOLD, MESSAGES } from '@/constants';
 
-const NoCharacters = () => <EmptyState message="No characters match your search." />;
+const NoCharacters = () => <EmptyState message={MESSAGES.emptyList} />;
 
 /** The starred/others list, shared by the home and advanced search screens. */
 export const CharacterSectionList = ({
@@ -40,7 +41,7 @@ export const CharacterSectionList = ({
       renderSectionHeader={renderSectionHeader}
       stickySectionHeadersEnabled={false}
       onEndReached={onEndReached}
-      onEndReachedThreshold={0.5}
+      onEndReachedThreshold={LIST_END_THRESHOLD}
       keyboardShouldPersistTaps="handled"
       ListFooterComponent={loading ? LoadingFooter : null}
       ListEmptyComponent={loading ? null : NoCharacters}

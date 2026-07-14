@@ -13,11 +13,9 @@ import { useFiltersStore } from '@/store/useFiltersStore';
 import type { SortDirection } from '@/types/filters';
 import type { RootStackParamList } from '@/types/navigation';
 import { countActiveFilters, EMPTY_FILTERS } from '@/utils/filters';
+import { MESSAGES, SEARCH_DEBOUNCE_MS } from '@/constants';
 
 type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
-
-const SEARCH_DEBOUNCE_MS = 350;
-const LOAD_ERROR = 'Could not load characters. Check your connection and try again.';
 
 export const HomeScreen = ({ navigation, route }: HomeScreenProps) => {
   const insets = useSafeAreaInsets();
@@ -92,7 +90,7 @@ export const HomeScreen = ({ navigation, route }: HomeScreenProps) => {
 
       <DeletedBanner count={deletedIds.length} onRestore={restoreAll} />
 
-      {error && <ErrorMessage message={LOAD_ERROR} />}
+      {error && <ErrorMessage message={MESSAGES.loadCharactersError} />}
 
       <CharacterSectionList
         sections={sections}

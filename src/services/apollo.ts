@@ -1,6 +1,5 @@
 import { ApolloClient, HttpLink, InMemoryCache, type Reference } from '@apollo/client';
-
-const GRAPHQL_URL = 'https://rickandmortyapi.com/graphql';
+import { GRAPHQL_URL } from '@/constants';
 
 export const apolloClient = new ApolloClient({
   link: new HttpLink({ uri: GRAPHQL_URL }),

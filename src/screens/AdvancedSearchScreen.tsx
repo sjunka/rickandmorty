@@ -11,10 +11,9 @@ import { useFiltersStore } from '@/store/useFiltersStore';
 import type { SortDirection } from '@/types/filters';
 import type { RootStackParamList } from '@/types/navigation';
 import { countActiveFilters } from '@/utils/filters';
+import { MESSAGES } from '@/constants';
 
 type AdvancedSearchScreenProps = NativeStackScreenProps<RootStackParamList, 'AdvancedSearch'>;
-
-const LOAD_ERROR = 'Could not load characters. Check your connection and try again.';
 
 export const AdvancedSearchScreen = ({ navigation, route }: AdvancedSearchScreenProps) => {
   const { search } = route.params;
@@ -51,7 +50,7 @@ export const AdvancedSearchScreen = ({ navigation, route }: AdvancedSearchScreen
 
       <ResultsSummary resultCount={visibleCount} filterCount={countActiveFilters(filters)} />
 
-      {error && <ErrorMessage message={LOAD_ERROR} />}
+      {error && <ErrorMessage message={MESSAGES.loadCharactersError} />}
 
       <CharacterSectionList
         sections={sections}

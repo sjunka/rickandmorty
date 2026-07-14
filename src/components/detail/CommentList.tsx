@@ -1,5 +1,6 @@
 import { Text, View } from 'react-native';
 import type { CommentListProps } from '@/interfaces/components';
+import { MESSAGES } from '@/constants';
 
 export const CommentList = ({ comments }: CommentListProps) => (
   <View>
@@ -8,7 +9,7 @@ export const CommentList = ({ comments }: CommentListProps) => (
     </Text>
 
     {comments.length === 0 && (
-      <Text className="mt-2 text-sm text-gray-400">No comments yet. Add the first one.</Text>
+      <Text className="mt-2 text-sm text-gray-400">{MESSAGES.noComments}</Text>
     )}
 
     {comments.map((comment) => (

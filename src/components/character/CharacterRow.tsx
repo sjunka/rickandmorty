@@ -5,6 +5,7 @@ import { RemoteImage } from '@/components/common';
 import type { CharacterRowProps } from '@/interfaces/components';
 import { useDeletedStore } from '@/store/useDeletedStore';
 import { useFavoritesStore } from '@/store/useFavoritesStore';
+import { COLORS, ICON_SIZES } from '@/constants';
 
 export const CharacterRow = ({ character, onPress }: CharacterRowProps) => {
   const isFavorite = useFavoritesStore((state) => state.favoriteIds.includes(character.id));
@@ -47,8 +48,8 @@ export const CharacterRow = ({ character, onPress }: CharacterRowProps) => {
       >
         <Ionicons
           name={isFavorite ? 'heart' : 'heart-outline'}
-          size={24}
-          color={isFavorite ? '#82D554' : '#D1D5DB'}
+          size={ICON_SIZES.row}
+          color={isFavorite ? COLORS.secondary : COLORS.heartOff}
         />
       </Pressable>
     </Pressable>
