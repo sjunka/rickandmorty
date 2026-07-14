@@ -1,4 +1,4 @@
-import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
+import { ApolloClient, HttpLink, InMemoryCache, type Reference } from '@apollo/client';
 
 const GRAPHQL_URL = 'https://rickandmortyapi.com/graphql';
 
@@ -9,14 +9,19 @@ export const apolloClient = new ApolloClient({
       Query: {
         fields: {
           // Merge paginated pages into a single list keyed by the filter,
-          // so fetchMore appends instead of replacing results.
+          // so fetchMore appends instead of replacing results. Deduplicated
+          // because onEndReached can request the same page twice.
           characters: {
             keyArgs: ['filter'],
-            merge(existing, incoming) {
-              return {
-                ...incoming,
-                results: [...(existing?.results ?? []), ...incoming.results],
-              };
+            merge(existing, incoming, { readField }) {
+              const merged: Reference[] = [...(existing?.results ?? [])];
+              const seenIds = new Set(merged.map((ref) => readField('id', ref)));
+              for (const ref of incoming.results as Reference[]) {
+                if (!seenIds.has(readField('id', ref))) {
+                  merged.push(ref);
+                }
+              }
+              return { ...incoming, results: merged };
             },
           },
         },

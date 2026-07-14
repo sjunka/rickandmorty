@@ -19,6 +19,9 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
 
   const { data, loading, error, fetchMore } = useQuery<CharactersQueryData>(GET_CHARACTERS, {
     variables: { page: 1 },
+    // Make `loading` reflect fetchMore too, so loadMore can't re-request
+    // the same page while it is still in flight.
+    notifyOnNetworkStatusChange: true,
   });
 
   const nextPage = data?.characters.info.next ?? null;
@@ -37,7 +40,7 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
   }, [data, favoriteIds, sortDirection]);
 
   const loadMore = () => {
-    if (nextPage) {
+    if (nextPage && !loading) {
       fetchMore({ variables: { page: nextPage } });
     }
   };
