@@ -1,4 +1,7 @@
 import { ActivityIndicator } from 'react-native';
-import { COLORS } from '@/constants';
+import { useThemeColors } from '@/hooks/useThemeColors';
 
-export const FullScreenLoader = () => <ActivityIndicator className="flex-1 bg-white" color={COLORS.primary} />;
+export const FullScreenLoader = () => {
+  const colors = useThemeColors();
+  return <ActivityIndicator className="flex-1 bg-white dark:bg-gray-900" color={colors.primary} />;
+};

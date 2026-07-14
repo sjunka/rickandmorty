@@ -45,7 +45,7 @@ export const AdvancedSearchScreen = ({ navigation, route }: AdvancedSearchScreen
   );
 
   return (
-    <View className="flex-1 bg-white" style={{ paddingTop: insets.top }}>
+    <View className="flex-1 bg-white dark:bg-gray-900" style={{ paddingTop: insets.top }}>
       <AdvancedSearchHeader onBack={backToFilters} onDone={done} />
 
       <ResultsSummary resultCount={visibleCount} filterCount={countActiveFilters(filters)} />

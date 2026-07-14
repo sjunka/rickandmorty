@@ -5,13 +5,35 @@ export const GRAPHQL_URL = 'https://rickandmortyapi.com/graphql';
  * The Figma palette, for props that take a color value (icons, spinners).
  * Tailwind classes read the same tokens from global.css.
  */
-export const COLORS = {
+interface ColorPalette {
+  primary: string;
+  secondary: string;
+  textPrimary: string;
+  iconIdle: string;
+  iconMuted: string;
+  heartOff: string;
+  background: string;
+}
+
+export const COLORS: ColorPalette = {
   primary: '#7A56C0',
   secondary: '#82D554',
   textPrimary: '#111827',
   iconIdle: '#6B7280',
   iconMuted: '#9CA3AF',
   heartOff: '#D1D5DB',
+  background: '#FFFFFF',
+};
+
+/** The same roles on a dark background. */
+export const COLORS_DARK: ColorPalette = {
+  primary: '#A98FDC',
+  secondary: '#82D554',
+  textPrimary: '#F9FAFB',
+  iconIdle: '#9CA3AF',
+  iconMuted: '#6B7280',
+  heartOff: '#4B5563',
+  background: '#111827',
 } as const;
 
 export const ICON_SIZES = {

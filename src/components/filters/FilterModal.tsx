@@ -47,7 +47,7 @@ export const FilterModal = ({ visible, filters, onClose, onApply }: FilterModalP
       {/* A Modal renders in its own native hierarchy, so the safe area has to
           come from the insets rather than a SafeAreaView. */}
       <View
-        className="flex-1 bg-white"
+        className="flex-1 bg-white dark:bg-gray-900"
         style={{ paddingTop: insets.top, paddingBottom: insets.bottom }}
       >
         <FilterHeader onClose={onClose} />

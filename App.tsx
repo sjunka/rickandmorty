@@ -1,10 +1,11 @@
+import { useColorScheme } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { ApolloProvider } from '@apollo/client/react';
-import { NavigationContainer } from '@react-navigation/native';
+import { DarkTheme, DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { COLORS } from '@/constants';
 import { apolloClient } from '@/services/apollo';
+import { useThemeColors } from '@/hooks/useThemeColors';
 import { HomeScreen } from '@/screens/HomeScreen';
 import { AdvancedSearchScreen } from '@/screens/AdvancedSearchScreen';
 import { CharacterDetailScreen } from '@/screens/CharacterDetailScreen';
@@ -14,15 +15,19 @@ import './global.css';
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const App = () => {
+  const scheme = useColorScheme();
+  const colors = useThemeColors();
+
   return (
     <SafeAreaProvider>
       <ApolloProvider client={apolloClient}>
-        <NavigationContainer>
-          <StatusBar style="dark" />
+        <NavigationContainer theme={scheme === 'dark' ? DarkTheme : DefaultTheme}>
+          <StatusBar style="auto" />
           <Stack.Navigator
             screenOptions={{
-              headerTintColor: COLORS.primary,
-              headerTitleStyle: { color: COLORS.textPrimary },
+              headerTintColor: colors.primary,
+              headerTitleStyle: { color: colors.textPrimary },
+              headerStyle: { backgroundColor: colors.background },
               headerShadowVisible: false,
             }}
           >
