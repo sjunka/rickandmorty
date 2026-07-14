@@ -12,8 +12,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { useQuery } from '@apollo/client/react';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { CommentInput } from '@/components/CommentInput';
-import { DetailField } from '@/components/DetailField';
+import { CommentInput, DetailField } from '@/components/detail';
 import type { CharacterQueryData, Comment } from '@/interfaces/character';
 import { GET_CHARACTER } from '@/services/queries';
 import { useCommentsStore } from '@/store/useCommentsStore';

@@ -1,5 +1,5 @@
 import { fireEvent, render } from '@testing-library/react-native';
-import { CharacterRow } from '@/components/CharacterRow';
+import { CharacterRow } from '@/components/character/CharacterRow';
 import { useDeletedStore } from '@/store/useDeletedStore';
 import { useFavoritesStore } from '@/store/useFavoritesStore';
 import type { Character } from '@/interfaces/character';

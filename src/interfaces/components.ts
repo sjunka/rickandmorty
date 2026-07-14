@@ -1,5 +1,12 @@
 import type { Character, CharacterSection, Filters } from '@/interfaces/character';
 
+/* Character list */
+
+export interface CharacterRowProps {
+  character: Character;
+  onPress: (character: Character) => void;
+}
+
 export interface CharacterSectionListProps {
   sections: CharacterSection[];
   loading: boolean;
@@ -7,20 +14,17 @@ export interface CharacterSectionListProps {
   onEndReached: () => void;
 }
 
-export interface ResultsSummaryProps {
-  resultCount: number;
-  filterCount: number;
-}
-
-export interface CharacterRowProps {
-  character: Character;
-  onPress: (character: Character) => void;
-}
-
 export interface SectionHeaderProps {
   title: string;
   count: number;
 }
+
+export interface DeletedBannerProps {
+  count: number;
+  onRestore: () => void;
+}
+
+/* Search and filters */
 
 export interface SearchBarProps {
   value: string;
@@ -29,16 +33,18 @@ export interface SearchBarProps {
   activeFilterCount: number;
 }
 
-export interface DeletedBannerProps {
-  count: number;
-  onRestore: () => void;
-}
-
 export interface FilterModalProps {
   visible: boolean;
   filters: Filters;
   onClose: () => void;
   onApply: (filters: Filters) => void;
+}
+
+export interface FilterGroupProps<T extends string> {
+  label: string;
+  options: readonly T[];
+  selected: T;
+  onSelect: (option: T) => void;
 }
 
 export interface FilterOptionProps<T extends string> {
@@ -49,12 +55,12 @@ export interface FilterOptionProps<T extends string> {
   onSelect: (option: T) => void;
 }
 
-export interface FilterGroupProps<T extends string> {
-  label: string;
-  options: readonly T[];
-  selected: T;
-  onSelect: (option: T) => void;
+export interface ResultsSummaryProps {
+  resultCount: number;
+  filterCount: number;
 }
+
+/* Character detail */
 
 export interface DetailFieldProps {
   label: string;

@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { Modal, Pressable, ScrollView, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { FilterGroup } from '@/components/FilterGroup';
+import { FilterGroup } from '@/components/filters/FilterGroup';
 import type { FilterModalProps } from '@/interfaces/components';
 import type { Filters } from '@/interfaces/character';
 import type {

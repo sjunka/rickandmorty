@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
 import type { ListRenderItemInfo } from 'react-native';
 import { ActivityIndicator, SectionList, Text } from 'react-native';
-import { CharacterRow } from '@/components/CharacterRow';
-import { SectionHeader } from '@/components/SectionHeader';
+import { CharacterRow } from '@/components/character/CharacterRow';
+import { SectionHeader } from '@/components/character/SectionHeader';
 import type { CharacterSectionListProps } from '@/interfaces/components';
 import type { Character, CharacterSection } from '@/interfaces/character';
 

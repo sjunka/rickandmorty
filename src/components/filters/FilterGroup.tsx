@@ -1,5 +1,5 @@
 import { Text, View } from 'react-native';
-import { FilterOption } from '@/components/FilterOption';
+import { FilterOption } from '@/components/filters/FilterOption';
 import type { FilterGroupProps } from '@/interfaces/components';
 import { formatFilterLabel } from '@/utils/filters';
 
