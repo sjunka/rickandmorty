@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { Pressable, TextInput, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import type { CommentInputProps } from '@/interfaces/components';
@@ -10,12 +10,12 @@ export const CommentInput = ({ onSubmit }: CommentInputProps) => {
   const colors = useThemeColors();
   const [text, setText] = useState('');
 
-  const submit = useCallback(() => {
+  const submit = () => {
     const trimmed = text.trim();
     if (trimmed.length === 0) return;
     onSubmit(trimmed);
     setText('');
-  }, [text, onSubmit]);
+  };
 
   return (
     <View className="mb-8 mt-4 flex-row items-center">

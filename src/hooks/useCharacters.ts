@@ -1,4 +1,3 @@
-import { useCallback, useMemo } from 'react';
 import { useQuery } from '@apollo/client/react';
 import type { CharacterSection, Filters } from '@/interfaces/character';
 import type { CharactersQuery, CharactersQueryVariables } from '@/services/graphql.generated';
@@ -37,7 +36,7 @@ export function useCharacters({
   const favoriteIds = useFavoritesStore((state) => state.favoriteIds);
   const deletedIds = useDeletedStore((state) => state.deletedIds);
 
-  const apiFilter = useMemo(() => toApiFilter(filters, search), [filters, search]);
+  const apiFilter = toApiFilter(filters, search);
 
   const { data, loading, error, fetchMore } = useQuery<CharactersQuery, CharactersQueryVariables>(GET_CHARACTERS, {
     variables: { page: 1, filter: apiFilter },
@@ -46,29 +45,25 @@ export function useCharacters({
 
   const nextPage = toNextPage(data);
 
-  const { sections, visibleCount } = useMemo(() => {
-    const visible = applyLocalFilters(toCharacters(data), {
-      favoriteIds,
-      deletedIds,
-      kind: filters.kind,
-    });
-    const sorted = sortCharactersByName(visible, sortDirection);
-    const favorites = new Set(favoriteIds);
-    const starred = sorted.filter((character) => favorites.has(character.id));
-    const others = sorted.filter((character) => !favorites.has(character.id));
+  const visible = applyLocalFilters(toCharacters(data), {
+    favoriteIds,
+    deletedIds,
+    kind: filters.kind,
+  });
+  const sorted = sortCharactersByName(visible, sortDirection);
+  const favorites = new Set(favoriteIds);
+  const starred = sorted.filter((character) => favorites.has(character.id));
+  const others = sorted.filter((character) => !favorites.has(character.id));
 
-    const result: CharacterSection[] = [];
-    if (starred.length > 0) result.push({ title: 'Starred Characters', data: starred });
-    if (others.length > 0) result.push({ title: 'Characters', data: others });
+  const sections: CharacterSection[] = [];
+  if (starred.length > 0) sections.push({ title: 'Starred Characters', data: starred });
+  if (others.length > 0) sections.push({ title: 'Characters', data: others });
 
-    return { sections: result, visibleCount: sorted.length };
-  }, [data, favoriteIds, deletedIds, filters.kind, sortDirection]);
-
-  const loadMore = useCallback(() => {
+  const loadMore = () => {
     if (nextPage && !loading) {
       fetchMore({ variables: { page: nextPage, filter: apiFilter } });
     }
-  }, [nextPage, loading, fetchMore, apiFilter]);
+  };
 
-  return { sections, visibleCount, loading, error: Boolean(error), loadMore };
+  return { sections, visibleCount: sorted.length, loading, error: Boolean(error), loadMore };
 }

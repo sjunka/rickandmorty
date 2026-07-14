@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -31,18 +31,12 @@ export const AdvancedSearchScreen = ({ navigation, route }: AdvancedSearchScreen
 
   // The filters live in a modal on the home screen rather than in the stack,
   // so going back means returning home and reopening it.
-  const backToFilters = useCallback(
-    () => navigation.navigate('Home', { reopenFilters: true }),
-    [navigation]
-  );
-  const done = useCallback(() => navigation.navigate('Home'), [navigation]);
+  const backToFilters = () => navigation.navigate('Home', { reopenFilters: true });
+  const done = () => navigation.navigate('Home');
 
-  const openDetail = useCallback(
-    (character: Character) => {
-      navigation.navigate('CharacterDetail', { id: character.id, name: character.name });
-    },
-    [navigation]
-  );
+  const openDetail = (character: Character) => {
+    navigation.navigate('CharacterDetail', { id: character.id, name: character.name });
+  };
 
   return (
     <View className="flex-1 bg-white dark:bg-gray-900" style={{ paddingTop: insets.top }}>
