@@ -9,6 +9,11 @@ import type { SortDirection } from '@/types/filters';
 
 /* Shared */
 
+export interface AnimatedHeartProps {
+  isFavorite: boolean;
+  size: number;
+}
+
 export interface EmptyStateProps {
   message: string;
 }

@@ -1,8 +1,7 @@
 import { Pressable, View } from 'react-native';
-import { RemoteImage } from '@/components/common';
-import { Ionicons } from '@expo/vector-icons';
+import { AnimatedHeart, RemoteImage } from '@/components/common';
 import type { CharacterAvatarProps } from '@/interfaces/components';
-import { COLORS, ICON_SIZES } from '@/constants';
+import { ICON_SIZES } from '@/constants';
 
 /** The detail image with the favorite heart pinned to its corner. */
 export const CharacterAvatar = ({ image, isFavorite, onToggleFavorite }: CharacterAvatarProps) => (
@@ -15,11 +14,7 @@ export const CharacterAvatar = ({ image, isFavorite, onToggleFavorite }: Charact
       accessibilityLabel={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
       className="absolute -bottom-1 -right-1 rounded-full bg-white p-1"
     >
-      <Ionicons
-        name={isFavorite ? 'heart' : 'heart-outline'}
-        size={ICON_SIZES.badge}
-        color={isFavorite ? COLORS.secondary : COLORS.heartOff}
-      />
+      <AnimatedHeart isFavorite={isFavorite} size={ICON_SIZES.badge} />
     </Pressable>
   </View>
 );

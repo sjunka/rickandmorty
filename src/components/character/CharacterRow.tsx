@@ -1,11 +1,10 @@
 import { useCallback } from 'react';
-import { Ionicons } from '@expo/vector-icons';
 import { Pressable, Text, View } from 'react-native';
-import { RemoteImage } from '@/components/common';
+import { AnimatedHeart, RemoteImage } from '@/components/common';
 import type { CharacterRowProps } from '@/interfaces/components';
 import { useDeletedStore } from '@/store/useDeletedStore';
 import { useFavoritesStore } from '@/store/useFavoritesStore';
-import { COLORS, ICON_SIZES } from '@/constants';
+import { ICON_SIZES } from '@/constants';
 
 export const CharacterRow = ({ character, onPress }: CharacterRowProps) => {
   const isFavorite = useFavoritesStore((state) => state.favoriteIds.includes(character.id));
@@ -46,11 +45,7 @@ export const CharacterRow = ({ character, onPress }: CharacterRowProps) => {
             : `Add ${character.name} to favorites`
         }
       >
-        <Ionicons
-          name={isFavorite ? 'heart' : 'heart-outline'}
-          size={ICON_SIZES.row}
-          color={isFavorite ? COLORS.secondary : COLORS.heartOff}
-        />
+        <AnimatedHeart isFavorite={isFavorite} size={ICON_SIZES.row} />
       </Pressable>
     </Pressable>
   );
