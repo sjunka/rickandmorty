@@ -78,7 +78,7 @@ export const HomeScreen = ({ navigation, route }: HomeScreenProps) => {
   );
 
   return (
-    <View className="flex-1 bg-white" style={{ paddingTop: insets.top }}>
+    <View className="flex-1 bg-white dark:bg-gray-900" style={{ paddingTop: insets.top }}>
       <ListHeader sortDirection={sortDirection} onToggleSort={toggleSort} />
 
       <SearchBar

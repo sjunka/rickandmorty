@@ -28,12 +28,12 @@ export const CharacterRow = ({ character, onPress }: CharacterRowProps) => {
       accessibilityRole="button"
       accessibilityLabel={`${character.name}, ${character.species}`}
       accessibilityHint="Long press to remove this character from the list"
-      className="flex-row items-center border-b border-gray-100 bg-white px-4 py-3 active:bg-primary-100"
+      className="flex-row items-center border-b border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 px-4 py-3 active:bg-primary-100 dark:active:bg-gray-800"
     >
       <RemoteImage source={{ uri: character.image }} className="h-10 w-10 rounded-full" />
       <View className="ml-4 flex-1">
-        <Text className="text-base font-semibold text-gray-800">{character.name}</Text>
-        <Text className="text-sm text-gray-400">{character.species}</Text>
+        <Text className="text-base font-semibold text-gray-800 dark:text-gray-200">{character.name}</Text>
+        <Text className="text-sm text-gray-400 dark:text-gray-500">{character.species}</Text>
       </View>
       <Pressable
         onPress={handleToggleFavorite}

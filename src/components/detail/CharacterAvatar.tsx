@@ -12,7 +12,7 @@ export const CharacterAvatar = ({ image, isFavorite, onToggleFavorite }: Charact
       hitSlop={8}
       accessibilityRole="button"
       accessibilityLabel={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
-      className="absolute -bottom-1 -right-1 rounded-full bg-white p-1"
+      className="absolute -bottom-1 -right-1 rounded-full bg-white dark:bg-gray-900 p-1"
     >
       <AnimatedHeart isFavorite={isFavorite} size={ICON_SIZES.badge} />
     </Pressable>

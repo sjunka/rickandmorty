@@ -9,11 +9,11 @@ export const FilterButton = ({ enabled, onPress }: FilterButtonProps) => (
     accessibilityRole="button"
     accessibilityState={{ disabled: !enabled }}
     accessibilityLabel="Apply filters"
-    className={`rounded-lg py-4 ${enabled ? 'bg-primary-600 active:bg-primary-700' : 'bg-gray-100'}`}
+    className={`rounded-lg py-4 ${enabled ? 'bg-primary-600 active:bg-primary-700 dark:active:bg-primary-600' : 'bg-gray-100 dark:bg-gray-800'}`}
   >
     <Text
       className={`text-center text-base font-semibold ${
-        enabled ? 'text-white' : 'text-gray-400'
+        enabled ? 'text-white' : 'text-gray-400 dark:text-gray-500'
       }`}
     >
       Filter

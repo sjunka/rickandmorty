@@ -46,7 +46,7 @@ export const CharacterDetailScreen = ({ route }: CharacterDetailScreenProps) => 
 
   return (
     <KeyboardAvoidingView
-      className="flex-1 bg-white"
+      className="flex-1 bg-white dark:bg-gray-900"
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       keyboardVerticalOffset={Platform.OS === 'ios' ? IOS_KEYBOARD_OFFSET : 0}
     >
@@ -57,7 +57,7 @@ export const CharacterDetailScreen = ({ route }: CharacterDetailScreenProps) => 
           onToggleFavorite={handleToggleFavorite}
         />
 
-        <Text className="mt-3 text-2xl font-bold text-gray-900">{character.name}</Text>
+        <Text className="mt-3 text-2xl font-bold text-gray-900 dark:text-gray-100">{character.name}</Text>
 
         <CharacterFields character={character} />
 

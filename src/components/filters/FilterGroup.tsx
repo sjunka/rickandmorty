@@ -10,7 +10,7 @@ export const FilterGroup = <T extends string>({
   onSelect,
 }: FilterGroupProps<T>) => (
   <View className="mb-6">
-    <Text className="mb-3 text-base text-gray-500">{label}</Text>
+    <Text className="mb-3 text-base text-gray-500 dark:text-gray-400 dark:text-gray-500">{label}</Text>
     <View className="flex-row flex-wrap gap-3">
       {options.map((option) => (
         <FilterOption

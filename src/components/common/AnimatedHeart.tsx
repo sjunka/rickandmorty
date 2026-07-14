@@ -6,11 +6,12 @@ import Animated, {
   withSequence,
   withSpring,
 } from 'react-native-reanimated';
-import { COLORS } from '@/constants';
+import { useThemeColors } from '@/hooks/useThemeColors';
 import type { AnimatedHeartProps } from '@/interfaces/components';
 
 /** The favorite heart, with a small spring pop when it turns on. */
 export const AnimatedHeart = ({ isFavorite, size }: AnimatedHeartProps) => {
+  const colors = useThemeColors();
   const scale = useSharedValue(1);
   const mounted = useRef(false);
 
@@ -37,7 +38,7 @@ export const AnimatedHeart = ({ isFavorite, size }: AnimatedHeartProps) => {
       <Ionicons
         name={isFavorite ? 'heart' : 'heart-outline'}
         size={size}
-        color={isFavorite ? COLORS.secondary : COLORS.heartOff}
+        color={isFavorite ? colors.secondary : colors.heartOff}
       />
     </Animated.View>
   );
