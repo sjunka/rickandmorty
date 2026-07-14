@@ -1,6 +1,8 @@
 import { useCallback, useMemo } from 'react';
 import { useQuery } from '@apollo/client/react';
-import type { CharactersQueryData, CharacterSection, Filters } from '@/interfaces/character';
+import type { CharacterSection, Filters } from '@/interfaces/character';
+import type { CharactersQuery, CharactersQueryVariables } from '@/services/graphql.generated';
+import { toCharacters, toNextPage } from '@/services/mappers';
 import { GET_CHARACTERS } from '@/services/queries';
 import { useDeletedStore } from '@/store/useDeletedStore';
 import { useFavoritesStore } from '@/store/useFavoritesStore';
@@ -37,15 +39,15 @@ export function useCharacters({
 
   const apiFilter = useMemo(() => toApiFilter(filters, search), [filters, search]);
 
-  const { data, loading, error, fetchMore } = useQuery<CharactersQueryData>(GET_CHARACTERS, {
+  const { data, loading, error, fetchMore } = useQuery<CharactersQuery, CharactersQueryVariables>(GET_CHARACTERS, {
     variables: { page: 1, filter: apiFilter },
     notifyOnNetworkStatusChange: true,
   });
 
-  const nextPage = data?.characters.info.next ?? null;
+  const nextPage = toNextPage(data);
 
   const { sections, visibleCount } = useMemo(() => {
-    const visible = applyLocalFilters(data?.characters.results ?? [], {
+    const visible = applyLocalFilters(toCharacters(data), {
       favoriteIds,
       deletedIds,
       kind: filters.kind,

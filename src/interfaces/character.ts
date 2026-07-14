@@ -45,14 +45,3 @@ export interface CharacterSection {
   title: string;
   data: Character[];
 }
-
-export interface CharactersQueryData {
-  characters: {
-    info: { next: number | null };
-    results: Character[];
-  };
-}
-
-export interface CharacterQueryData {
-  character: CharacterDetail;
-}

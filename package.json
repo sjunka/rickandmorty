@@ -30,10 +30,13 @@
     "web": "expo start --web",
     "test": "jest",
     "test:watch": "jest --watch",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "codegen": "graphql-codegen --config codegen.ts"
   },
   "private": true,
   "devDependencies": {
+    "@graphql-codegen/cli": "^7.2.0",
+    "@graphql-codegen/typescript-operations": "^6.1.0",
     "@tailwindcss/postcss": "^4.3.2",
     "@testing-library/react-native": "^14.0.1",
     "@types/jest": "^29.5.14",
