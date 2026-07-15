@@ -38,7 +38,7 @@ export const CharacterRow = ({ character, onPress }: CharacterRowProps) => {
             : `Add ${character.name} to favorites`
         }
       >
-        <AnimatedHeart isFavorite={isFavorite} size={ICON_SIZES.row} />
+        <AnimatedHeart characterId={character.id} isFavorite={isFavorite} size={ICON_SIZES.row} />
       </Pressable>
     </Pressable>
   );

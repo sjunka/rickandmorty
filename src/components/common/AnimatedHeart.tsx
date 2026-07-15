@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import Animated, {
   useAnimatedStyle,
@@ -8,20 +8,28 @@ import Animated, {
 } from 'react-native-reanimated';
 import { useThemeColors } from '@/hooks/useThemeColors';
 import type { AnimatedHeartProps } from '@/interfaces/components';
+import { useFavoritesStore } from '@/store/useFavoritesStore';
+
+/**
+ * How recent the favorited event has to be for the heart to pop. Old events
+ * are ignored so a starred row scrolling back into view does not pop again.
+ */
+const POP_WINDOW_MS = 800;
 
 /** The favorite heart, with a small spring pop when it turns on. */
-export const AnimatedHeart = ({ isFavorite, size }: AnimatedHeartProps) => {
+export const AnimatedHeart = ({ characterId, isFavorite, size }: AnimatedHeartProps) => {
   const colors = useThemeColors();
   const scale = useSharedValue(1);
-  const mounted = useRef(false);
+
+  // Animate from the store event rather than the prop: favoriting moves the
+  // row into the starred section, which remounts this component, so a
+  // prop-change guard would swallow every pop after the first.
+  const lastFavorited = useFavoritesStore((state) => state.lastFavorited);
 
   useEffect(() => {
-    // Skip the initial render, so persisted favorites don't pop on mount.
-    if (!mounted.current) {
-      mounted.current = true;
-      return;
-    }
-    if (isFavorite) {
+    const isMine = lastFavorited?.id === characterId;
+    const isFresh = lastFavorited !== null && Date.now() - lastFavorited.at < POP_WINDOW_MS;
+    if (isMine && isFresh) {
       scale.set(
         withSequence(
           withSpring(1.4, { damping: 12, stiffness: 400 }),
@@ -29,7 +37,7 @@ export const AnimatedHeart = ({ isFavorite, size }: AnimatedHeartProps) => {
         )
       );
     }
-  }, [isFavorite, scale]);
+  }, [lastFavorited, characterId, scale]);
 
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [{ scale: scale.get() }],
