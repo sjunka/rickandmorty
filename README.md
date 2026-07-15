@@ -98,11 +98,12 @@ src/
 │   ├── detail/
 │   ├── filters/
 │   └── search/
-├── screens/      # Home, AdvancedSearch, CharacterDetail
-├── services/     # Apollo client and GraphQL queries
-├── store/        # favorites, comments, deleted, applied filters
-├── hooks/        # useCharacters: fetch + section building, shared by both lists
+├── constants/    # colors, sizes, thresholds, storage keys, user-facing strings
+├── hooks/        # useCharacters (fetch + sections) and useThemeColors
 ├── interfaces/   # domain shapes and component props
+├── screens/      # Home, AdvancedSearch, CharacterDetail
+├── services/     # Apollo client, queries, generated types, the null-boundary mappers
+├── store/        # favorites, comments, deleted, applied filters
 ├── types/        # union types and navigation params
 └── utils/        # sorting and filter helpers, unit tested
 ```
