@@ -31,6 +31,8 @@ with Expo SDK 57 and the [Rick and Morty GraphQL API](https://rickandmortyapi.co
 - Favorites, pinned in their own section at the top of the list
 - Comments on any character, kept across app restarts
 - Soft delete: long press a row to hide a character, restore it any time from the banner
+- Dark mode, following the system appearance, with a toggle in the header
+- The favorite heart pops with a spring animation (Reanimated)
 
 ## Tech stack
 
@@ -65,7 +67,7 @@ npm run test:watch
 npm run typecheck # tsc --noEmit
 ```
 
-Thirty tests cover the sort comparator, the filter helpers, the stores,
+Thirty-one tests cover the sort comparator, the filter helpers, the stores,
 row interactions, and both list screens rendered against a mocked GraphQL query.
 
 ## How the API is used

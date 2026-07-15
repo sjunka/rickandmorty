@@ -26,7 +26,7 @@ and a Management sheet (the decisions behind the diffs). One page, no digging.*
 | React Doctor | **100/100** (started 83; the two findings were fixed, not suppressed) | ✅ |
 | expo-doctor | **20/20** — it caught two missing native peer dependencies that would have crashed a production build | ✅ |
 | Types | Strict mode from day one; `npm run codegen` generates operation types from the schema, and a mapper layer keeps the API's all-nullable types out of the app | ✅ |
-| Tests | **30/30 passing** — sort comparator, filter helpers, all four stores, row interactions, and both list screens against a mocked GraphQL query | ✅ |
+| Tests | **31/31 passing** — sort comparator, filter helpers, all four stores, row interactions, and both list screens against a mocked GraphQL query | ✅ |
 | Craft | Every color, size, threshold, storage key and user-facing string lives in `src/constants`; screens compose named components, nothing is passed inline as JSX | ✅ |
 | Git | 10 merged PRs, one per phase of work; GitHub Actions runs typecheck + tests on every push and PR | ✅ |
 
