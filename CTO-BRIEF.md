@@ -64,6 +64,9 @@ and a Management sheet (the decisions behind the diffs). One page, no digging.*
 1. E2E happy path with Maestro (list → filter → detail → comment)
 2. Error tracking (Sentry) and analytics around search usage
 3. Physical-device pass for the spring animations and dark mode
+4. OTA updates with EAS Update (`expo-updates`) — ship JS/asset fixes to
+   installed apps in minutes, no store review; native changes still go
+   through a store release
 
 ---
 
