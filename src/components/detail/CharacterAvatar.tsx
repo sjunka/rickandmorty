@@ -4,7 +4,7 @@ import type { CharacterAvatarProps } from '@/interfaces/components';
 import { ICON_SIZES } from '@/constants';
 
 /** The detail image with the favorite heart pinned to its corner. */
-export const CharacterAvatar = ({ image, isFavorite, onToggleFavorite }: CharacterAvatarProps) => (
+export const CharacterAvatar = ({ characterId, image, isFavorite, onToggleFavorite }: CharacterAvatarProps) => (
   <View className="mt-2 self-start">
     <RemoteImage source={{ uri: image }} className="h-20 w-20 rounded-full" />
     <Pressable
@@ -14,7 +14,7 @@ export const CharacterAvatar = ({ image, isFavorite, onToggleFavorite }: Charact
       accessibilityLabel={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
       className="absolute -bottom-1 -right-1 rounded-full bg-white dark:bg-gray-900 p-1"
     >
-      <AnimatedHeart isFavorite={isFavorite} size={ICON_SIZES.badge} />
+      <AnimatedHeart characterId={characterId} isFavorite={isFavorite} size={ICON_SIZES.badge} />
     </Pressable>
   </View>
 );

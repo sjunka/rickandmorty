@@ -10,6 +10,7 @@ import type { SortDirection } from '@/types/filters';
 /* Shared */
 
 export interface AnimatedHeartProps {
+  characterId: string;
   isFavorite: boolean;
   size: number;
 }
@@ -110,6 +111,7 @@ export interface FilterOptionProps<T extends string> {
 /* Character detail */
 
 export interface CharacterAvatarProps {
+  characterId: string;
   image: string;
   isFavorite: boolean;
   onToggleFavorite: () => void;

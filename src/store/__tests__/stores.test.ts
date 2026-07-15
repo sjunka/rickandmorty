@@ -5,7 +5,7 @@ import { useFiltersStore } from '@/store/useFiltersStore';
 import { EMPTY_FILTERS } from '@/utils/filters';
 
 beforeEach(() => {
-  useFavoritesStore.setState({ favoriteIds: [] });
+  useFavoritesStore.setState({ favoriteIds: [], lastFavorited: null });
   useDeletedStore.setState({ deletedIds: [] });
   useCommentsStore.setState({ commentsByCharacter: {} });
   useFiltersStore.setState({ filters: EMPTY_FILTERS });
@@ -38,6 +38,21 @@ describe('useFavoritesStore', () => {
 
     useFavoritesStore.getState().toggleFavorite('1');
     expect(useFavoritesStore.getState().favoriteIds).toEqual([]);
+  });
+
+  it('records a fresh favorited event every time a character is added', () => {
+    useFavoritesStore.getState().toggleFavorite('1');
+    const first = useFavoritesStore.getState().lastFavorited;
+    expect(first?.id).toBe('1');
+
+    // Un-favoriting keeps the last event; re-favoriting emits a new one.
+    useFavoritesStore.getState().toggleFavorite('1');
+    expect(useFavoritesStore.getState().lastFavorited).toBe(first);
+
+    useFavoritesStore.getState().toggleFavorite('1');
+    const second = useFavoritesStore.getState().lastFavorited;
+    expect(second?.id).toBe('1');
+    expect(second).not.toBe(first);
   });
 });
 

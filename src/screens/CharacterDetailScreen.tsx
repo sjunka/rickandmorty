@@ -51,6 +51,7 @@ export const CharacterDetailScreen = ({ route }: CharacterDetailScreenProps) => 
     >
       <ScrollView className="flex-1 px-4" keyboardShouldPersistTaps="handled">
         <CharacterAvatar
+          characterId={id}
           image={character.image}
           isFavorite={isFavorite}
           onToggleFavorite={handleToggleFavorite}
